@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                   controller: _deviceController,
                   validator: (s) {
                     if (s.isEmpty)
-                      return "Digite o item.";
+                      return "Digite o dispositivo.";
                     else
                       return null;
                   },

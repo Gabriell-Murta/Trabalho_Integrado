@@ -17,10 +17,12 @@ class DeviceRepository {
 
   Future create(Device item) async {
     try {
+      var device = item.toMap();
+      device.remove("IdDevice");
       final Database db = await _getDB();
       await db.insert(
         TABLE_NAME,
-        item.toMap(),
+        device,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
