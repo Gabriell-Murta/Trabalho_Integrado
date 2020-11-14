@@ -1,9 +1,6 @@
 # Tarefa
 
-Aplicativo desenvolvido em grupo para o Trabalho Integrado.
-Esther e Flávia : View e model
-Gabriell e José : repository
-Hugo e João : controllers
+Aplicativo desenvolvido em grupo para o Trabalho Integrado. Esther e Flávia : View e model | Gabriell e José : repository | Hugo e João : controllers
 
 ## Documentação
 
