@@ -39,44 +39,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lista de Tarefas'), centerTitle: true),
+      appBar: AppBar(title: Text('DISPOSITIVOS'), centerTitle: true),
       body: Scrollbar(
         child: ListView(
           children: [
             for (int i = 0; i < _list.length; i++)
               ListTile(
-                title: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(_list[i].Nick),
-                    ],
-                  ),
-                  secondary: IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      size: 20.0,
-                      color: Colors.red[900],
-                    ),
-                    onPressed: () {
-                      _controller.delete(i).then((data) {
-                        setState(() {
-                          _list = _controller.list;
-                        });
-                      });
-                    },
-                  ),
-                  onChanged: (c) {
-                    _controller.update(_list[i]).then((data) {
-                      setState(() {
-                        _list = _controller.list;
-                      });
-                    });
-                  },
-                ),
-              ),
+                title: Text (_list[i].Nick),
+
+                 ),
+
           ],
         ),
       ),
@@ -108,22 +80,7 @@ class _HomePageState extends State<HomePage> {
                       return null;
                   },
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(labelText: "Tarefa"),
-                ),
-                Container(
-                  height: 250,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.dateAndTime,
-                    initialDateTime: DateTime.now().add(Duration(hours: 1)),
-                    onDateTimeChanged: (DateTime newDateTime) {
-                      setState(() {
-                        selectedDate = newDateTime;
-                      });
-                    },
-                    use24hFormat: true,
-                    minuteInterval: 1,
-                  ),
+                  decoration: InputDecoration(labelText: "Nome do Dispositivo:"),
                 ),
               ],
             ),
