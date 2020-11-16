@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         return AlertDialog(
           content: Text(
-              "Seja bem vindo! Parece que esta é a primeira vez que você abre este aplicativo! Através dele, você pode facilmente criar listas de tarefas, tocando no botão no canto inferior da tela!"),
+              "Seja bem vindo! Parece que esta é a primeira vez que você abre este aplicativo! Através dele, você pode facilmente monitorar seus dispositivos, tocando no botão no canto inferior da tela!"),
           actions: <Widget>[
             FlatButton(
               child: new Text('OK'),
