@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
   Widget DeviceList(){
 
       return ListTile(
-       title: Text (_list[i].Nick),
+       //title: Text (_list[i].Nick),
 
       );
   }
