@@ -14,17 +14,19 @@ class Device {
       'Location': Location,
     };
   }
-  /*Item.fromJson(Map<String, dynamic> json) {
-    nome = json['nome'];
-    concluido = json['concluido'];
-    dueDate = DateTime.parse(json['dueDate']);
+  Device.fromJson(Map<String, dynamic> json) {
+    Nick = json['Nick'];
+    IdDevice = json['IdDevice'];
+    IdClient = json['IdClient'];
+    Location = json['Location'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nome'] = this.nome;
-    data['concluido'] = this.concluido;
-    data['dueDate'] = this.dueDate.toIso8601String();
+    data['Nick'] = this.Nick;
+    data['IdClient'] = this.IdClient;
+    data['IdDevice'] = this.IdDevice;
+    data['Location'] = this.Location;
     return data;
-  }*/
+  }
 }

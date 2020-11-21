@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
   var _list = List<Device>();
   var _controller = DeviceController();
   var selectedDate = DateTime.now();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  //final SnackBar snackBar = const flutter_search_bar;
 
   @override
   void initState() {
@@ -39,17 +41,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('DISPOSITIVOS'), centerTitle: true),
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text('DISPOSITIVOS'), 
+        actions: <Widget>
+        [IconButton
+            (icon: const Icon(Icons.search),
+            tooltip: "Pesquisa",
+            onPressed: (){
+
+            }
+          )
+        ],
+      ),
       body: Scrollbar(
         child: ListView(
           children: [
             for (int i = 0; i < _list.length; i++)
-              ListTile(
-                title: Text (_list[i].Nick),
-
-                 ),
+              DeviceList()
 
           ],
+
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -57,6 +69,14 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => _displayDialog(context),
       ),
     );
+  }
+
+  Widget DeviceList(){
+
+      return ListTile(
+       title: Text (_list[i].Nick),
+
+      );
   }
 
   _displayDialog(context) async {

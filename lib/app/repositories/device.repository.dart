@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/settings.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -32,20 +34,16 @@ class DeviceRepository {
 
   Future<List<Device>> getAll() async {
     try {
-      final Database db = await _getDB();
-      final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
+      var response = await http.get(Uri.encodeFull("http://paulofernando.mat.br/"));
 
-      return List.generate(
-        maps.length,
-        (index) => Device(
-          IdDevice: maps[index]['IdDevice'],
-          IdClient: maps[index]['IdClient'],
-          Nick: maps[index]['Nick'],
-          Location: maps[index]['Location'],
-        ),
-      );
+      if (response.statusCode == 200) {
+        return (jsonDecode(response.body) as List).map((x)=>Device.fromJson(x)).toList();
+      }
+
+      throw new Exception();
     } catch (e) {
-      print(e);
+      print("FUDEU");
+
       return new List<Device>();
     }
   }
