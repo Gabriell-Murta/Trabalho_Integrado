@@ -5,6 +5,16 @@ class DeviceController {
   List<Device> list = new List<Device>();
   DeviceRepository repository = new DeviceRepository();
 
+  Future<void> getTeste() async {
+    try {
+      final allList = await repository.getTeste();
+      list.clear();
+      list.addAll(allList);
+    } catch (e) {
+      print("Erro: " + e.toString());
+    }
+  }
+
   Future<void> getAll() async {
     try {
       final allList = await repository.getAll();

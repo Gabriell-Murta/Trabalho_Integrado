@@ -4,9 +4,24 @@ import 'package:mvc_persistence/app/controllers/device.controller.dart';
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/device.model.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+}
+
+class DevicePanelItem {
+  String ExpandedValue;
+  String HeaderValue;
+  bool IsExpanded;
+  Device Item;
+
+  DevicePanelItem(
+      {this.ExpandedValue,
+      this.HeaderValue,
+      this.IsExpanded = false,
+      this.Item});
 }
 
 class _HomePageState extends State<HomePage> {
@@ -30,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.getAll().then((data) {
+      _controller.getTeste().then((data) {
         setState(() {
           _list = _controller.list;
         });
@@ -43,25 +58,22 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('DISPOSITIVOS'), 
-        actions: <Widget>
-        [IconButton
-            (icon: const Icon(Icons.search),
-            tooltip: "Pesquisa",
-            onPressed: (){
-
-            }
-          )
+        title: Text('DISPOSITIVOS'),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.search),
+              tooltip: "Pesquisa",
+              onPressed: () {})
         ],
       ),
-      body: Scrollbar(
-        child: ListView(
-          children: [
-            for (int i = 0; i < _list.length; i++)
-              DeviceList()
-
-          ],
-
+      // body: Scrollbar(
+      //   child: ListView(
+      //     children: [for (int i = 0; i < _list.length; i++) DeviceList()],
+      //   ),
+      // ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: _buildDevicePanel(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -71,12 +83,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget DeviceList(){
+  Widget _buildDevicePanel() {
+    var listaPanel = new List<DevicePanelItem>.generate(
+        _list.length,
+        (index) => DevicePanelItem(
+            ExpandedValue:
+                'Dispositivo localizado em "${_list[index].Location}"',
+            HeaderValue: _list[index].Nick,
+            Item: _list[index]));
 
-      return ListTile(
-       //title: Text (_list[i].Nick),
-
-      );
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          listaPanel[index].IsExpanded = !isExpanded;
+        });
+      },
+      children: listaPanel.map<ExpansionPanel>((DevicePanelItem item) {
+        return ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(item.HeaderValue),
+              );
+            },
+            body: ListTile(
+              title: Text(item.ExpandedValue),
+            ),
+            isExpanded: item.IsExpanded);
+      }).toList(),
+    );
   }
 
   _displayDialog(context) async {
@@ -100,7 +134,8 @@ class _HomePageState extends State<HomePage> {
                       return null;
                   },
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(labelText: "Nome do Dispositivo:"),
+                  decoration:
+                      InputDecoration(labelText: "Nome do Dispositivo:"),
                 ),
               ],
             ),
@@ -118,11 +153,11 @@ class _HomePageState extends State<HomePage> {
                 if (_formKey.currentState.validate()) {
                   _controller
                       .create(Device(
-                          Nick: _deviceController.text,
-                          IdDevice: 0,
-                          Location:"",
-                          IdClient: 0,
-                          ))
+                    Nick: _deviceController.text,
+                    IdDevice: 0,
+                    Location: "",
+                    IdClient: 0,
+                  ))
                       .then((data) {
                     setState(() {
                       _list = _controller.list;

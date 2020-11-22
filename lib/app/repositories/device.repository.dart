@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/device.model.dart';
+
 class DeviceRepository {
   Future<Database> _getDB() async {
     return openDatabase(
@@ -32,12 +34,25 @@ class DeviceRepository {
     }
   }
 
+  Future<List<Device>> getTeste() async {
+    var lista = new List<Device>();
+    Device obj = new Device(
+        IdDevice: 0, Nick: "Batata", IdClient: 1, Location: "Celeiro");
+
+    lista.add(obj);
+
+    return lista;
+  }
+
   Future<List<Device>> getAll() async {
     try {
-      var response = await http.get(Uri.encodeFull("http://paulofernando.mat.br/"));
+      var response =
+          await http.get(Uri.encodeFull("http://paulofernando.mat.br/"));
 
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as List).map((x)=>Device.fromJson(x)).toList();
+        return (jsonDecode(response.body) as List)
+            .map((x) => Device.fromJson(x))
+            .toList();
       }
 
       throw new Exception();
