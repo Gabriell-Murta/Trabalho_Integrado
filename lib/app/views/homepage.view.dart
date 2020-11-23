@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   var selectedDate = DateTime.now();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //final SnackBar snackBar = const flutter_search_bar;
-
+  var list_panel = List<DevicePanelItem>();
   @override
   void initState() {
     super.initState();
@@ -49,6 +49,8 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           _list = _controller.list;
         });
+
+        list_panel=generateDevicePanelItem();
       });
     });
   }
@@ -83,22 +85,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDevicePanel() {
-    var listaPanel = new List<DevicePanelItem>.generate(
-        _list.length,
-        (index) => DevicePanelItem(
+
+  List<DevicePanelItem> generateDevicePanelItem(){
+    return List.generate(
+      _list.length,
+            (index) => DevicePanelItem(
             ExpandedValue:
-                'Dispositivo localizado em "${_list[index].Location}"',
+            'Dispositivo localizado em "${_list[index].Nick}"',
             HeaderValue: _list[index].Nick,
             Item: _list[index]));
+  }
+
+  Widget _buildDevicePanel() {
 
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
-          listaPanel[index].IsExpanded = !isExpanded;
+          list_panel[index].IsExpanded = !isExpanded;
         });
       },
-      children: listaPanel.map<ExpansionPanel>((DevicePanelItem item) {
+      children: list_panel.map<ExpansionPanel>((DevicePanelItem item) {
         return ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
               return ListTile(
