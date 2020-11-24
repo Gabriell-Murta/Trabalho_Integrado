@@ -15,13 +15,11 @@ class DevicePanelItem {
   String ExpandedValue;
   String HeaderValue;
   bool IsExpanded;
-  Device Item;
 
   DevicePanelItem(
       {this.ExpandedValue,
       this.HeaderValue,
-      this.IsExpanded = false,
-      this.Item});
+      this.IsExpanded = false});
 }
 
 class _HomePageState extends State<HomePage> {
@@ -45,12 +43,12 @@ class _HomePageState extends State<HomePage> {
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.getTeste().then((data) {
+      _controller.getAll().then((data) {
         setState(() {
           _list = _controller.list;
+          list_panel=generateDevicePanelItem();
         });
 
-        list_panel=generateDevicePanelItem();
       });
     });
   }
@@ -78,11 +76,7 @@ class _HomePageState extends State<HomePage> {
           child: _buildDevicePanel(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _displayDialog(context),
-      ),
-    );
+     );
   }
 
 
@@ -91,9 +85,10 @@ class _HomePageState extends State<HomePage> {
       _list.length,
             (index) => DevicePanelItem(
             ExpandedValue:
-            'Dispositivo localizado em "${_list[index].Nick}"',
+            'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
             HeaderValue: _list[index].Nick,
-            Item: _list[index]));
+            )
+    );
   }
 
   Widget _buildDevicePanel() {
@@ -119,66 +114,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _displayDialog(context) async {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _deviceController,
-                  validator: (s) {
-                    if (s.isEmpty)
-                      return "Digite o dispositivo.";
-                    else
-                      return null;
-                  },
-                  keyboardType: TextInputType.text,
-                  decoration:
-                      InputDecoration(labelText: "Nome do Dispositivo:"),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: new Text('CANCEL'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: new Text('SALVAR'),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  _controller
-                      .create(Device(
-                    Nick: _deviceController.text,
-                    IdDevice: 0,
-                    Location: "",
-                    IdClient: 0,
-                  ))
-                      .then((data) {
-                    setState(() {
-                      _list = _controller.list;
-                      _deviceController.text = "";
-                    });
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
+
 
   _displayFirstDialog(context) async {
     return showDialog(

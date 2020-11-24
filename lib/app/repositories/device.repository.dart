@@ -34,22 +34,11 @@ class DeviceRepository {
     }
   }
 
-  Future<List<Device>> getTeste() async {
-    var lista = new List<Device>();
-    Device obj = new Device(
-        IdDevice: 0, Nick: "Batata", IdClient: 1, Location: "Celeiro");
-
-    lista.add(obj);
-
-    return lista;
-  }
-
-  Future<List<Device>> getAll() async {
+Future<List<Device>> getAll() async {
     try {
       var response =
-          await http.get(Uri.encodeFull("http://paulofernando.mat.br/"));
-
-      if (response.statusCode == 200) {
+          await http.get(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Devices/1"));
+     if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
             .map((x) => Device.fromJson(x))
             .toList();
@@ -76,7 +65,8 @@ class DeviceRepository {
         IdDevice: maps[0]['IdDevice'],
         IdClient: maps[0]['IdClient'],
         Nick: maps[0]['Nick'],
-        Location: maps[0]['Location'],
+        Latitude: maps[0]['Latitude'],
+        Longitude: maps[0]['Longitude'],
       );
     } catch (ex) {
       print(ex);

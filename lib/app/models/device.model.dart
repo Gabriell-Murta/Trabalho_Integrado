@@ -2,23 +2,26 @@ class Device {
   int IdDevice;
   String Nick;
   int IdClient;
-  String Location;
+  String Latitude;
+  String Longitude;
 
-  Device({this.IdDevice, this.Nick, this.IdClient, this.Location});
+  Device({this.IdDevice, this.Nick, this.IdClient, this.Latitude, this.Longitude});
 
   Map<String, dynamic> toMap() {
     return {
       'IdDevice': IdDevice,
       'Nick': Nick,
       'IdClient': IdClient,
-      'Location': Location,
+      'Latitude': Latitude,
+      'Longitude': Longitude,
     };
   }
   Device.fromJson(Map<String, dynamic> json) {
-    Nick = json['Nick'];
-    IdDevice = json['IdDevice'];
-    IdClient = json['IdClient'];
-    Location = json['Location'];
+    Nick = json['nick'];
+    IdDevice = json['idDevice'];
+    IdClient = json['idClient'];
+    Latitude = json['latitude'];
+    Longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +29,8 @@ class Device {
     data['Nick'] = this.Nick;
     data['IdClient'] = this.IdClient;
     data['IdDevice'] = this.IdDevice;
-    data['Location'] = this.Location;
+    data['Latitude'] = this.Latitude;
+    data['Longitude'] = this.Longitude;
     return data;
   }
 }
