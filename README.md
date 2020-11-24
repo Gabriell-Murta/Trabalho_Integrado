@@ -1,10 +1,12 @@
-# Tarefa
+# Dispositivo
 
 Aplicativo desenvolvido em grupo para o Trabalho Integrado. Esther e Flávia : View e model | Gabriell e José : repository | Hugo e João : controllers
+link do swagger:
+https://tapegandofogobicho.azurewebsites.net/swagger/index.html
 
 ## Documentação
 
-O aplicativo consiste de uma única tela, na qual é possível adicionar os nomes dos dispositivos através de um FloatingActionButton. Idealmente, é uma ferramenta para vizualizar os dispositivos de monitoramento dos clientes.
+O aplicativo consiste de uma única tela, na qual é possível visualizar os nomes, ID e localização dos dispositivos. Idealmente, é uma ferramenta para vizualizar os dispositivos de monitoramento dos clientes.
 
 ## Estrutura
 1. main.dart (Inicializa o app);
