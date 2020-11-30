@@ -10,7 +10,7 @@ Desenvolver um dispositivo IoT conectado à nuvem através de MQTT, que pode ser
 
 ## Documentação
 
-O aplicativo consiste de uma única tela, na qual é possível visualizar os nomes, ID e localização dos dispositivos. Idealmente, é uma ferramenta para vizualizar os dispositivos de monitoramento dos clientes.
+O aplicativo consiste de uma única tela, na qual é possível visualizar os nomes, ID e localização dos dispositivos. Idealmente, é uma ferramenta para visualizar os dispositivos de monitoramento dos clientes.
 
 ## Estrutura
 1. main.dart (Inicializa o app);
