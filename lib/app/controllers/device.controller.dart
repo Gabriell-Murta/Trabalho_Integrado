@@ -15,6 +15,16 @@ class DeviceController {
     }
   }
 
+  Future<void> getByLogin(String login, String senha) async {
+    try {
+      final list = await repository.getByLogin(login, senha);
+      list.clear();
+      list.addAll(list);
+    } catch (e) {
+      print("Erro: " + e.toString());
+    }
+  }
+
   Future<void> create(Device device) async {
     try {
       list.add(device);

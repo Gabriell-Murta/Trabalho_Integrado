@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mvc_persistence/app/controllers/device.controller.dart';
+import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/views/homepage.view.dart';
-
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'cadastro.view.dart';
 // import 'package:mvc_persistence/app/controllers/client.controller.dart';
 // import 'package:mvc_persistence/app/models/client.model.dart';
@@ -12,7 +15,12 @@ import 'cadastro.view.dart';
 
 // import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _tedLogin = TextEditingController();
   final _tedSenha = TextEditingController();
   BuildContext _context;
@@ -59,29 +67,38 @@ class LoginPage extends StatelessWidget {
   _body(BuildContext context) {
     return Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             _textFormField("Cpf/Cnpj", _tedLogin),
             _textFormField("Senha", _tedSenha),
-            containerButton(context, "Entrar", true),
-            containerButton(context, "Cadastrar", false)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                containerButton(context, "Cadastrar", false),
+                containerButton(context, "Entrar", true)
+              ],
+            )
           ],
         ));
   }
 
   _textFormField(String field, TextEditingController controller) {
     return TextFormField(
+        // inputFormatters: new MaskTextInputFormatter(mask: ),
         controller: controller,
         obscureText: field == "Senha",
         validator: (s) => _validaInput(s, field),
         keyboardType: TextInputType.text,
-        style: TextStyle(color: Theme.of(_context).primaryColor),
+        style: TextStyle(fontSize: 22, color: Theme.of(_context).primaryColor),
         decoration: InputDecoration(
+            border: OutlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(_context).primaryColor)),
             labelText: field,
             labelStyle: TextStyle(
-                fontSize: 20.0, color: Theme.of(_context).primaryColor),
+                fontSize: 22.0, color: Theme.of(_context).primaryColor),
             hintText: "Informe o $field"));
   }
 
@@ -159,8 +176,17 @@ class LoginPage extends StatelessWidget {
         },
       );
     } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+      var _controller = DeviceController();
+      var _list = List<Device>();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.getByLogin(login, senha).then((data) {
+          setState(() {
+            _list = _controller.list;
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+          });
+        });
+      });
     }
   }
 }

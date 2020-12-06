@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black87,
+        scaffoldBackgroundColor: Colors.brown[800],
         primaryColor: Colors.red[900],
         primaryColorDark: Colors.black,
         cursorColor: Colors.red[900],

@@ -34,11 +34,29 @@ class DeviceRepository {
     }
   }
 
-Future<List<Device>> getAll() async {
+  Future<List<Device>> getAll() async {
     try {
-      var response =
-          await http.get(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Devices/4"));
-     if (response.statusCode == 200) {
+      var response = await http.get(Uri.encodeFull(
+          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices/4"));
+      if (response.statusCode == 200) {
+        return (jsonDecode(response.body) as List)
+            .map((x) => Device.fromJson(x))
+            .toList();
+      }
+
+      throw new Exception();
+    } catch (e) {
+      print("FUDEU");
+
+      return new List<Device>();
+    }
+  }
+
+  Future<List<Device>> getByLogin(String senha, String login) async {
+    try {
+      var response = await http.get(Uri.encodeFull(
+          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices?cpf=$login&senha$senha"));
+      if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
             .map((x) => Device.fromJson(x))
             .toList();
