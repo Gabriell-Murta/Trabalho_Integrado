@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mvc_persistence/app/views/homepage.view.dart';
+import 'package:mvc_persistence/app/views/login.view.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -8,11 +8,14 @@ class MyApp extends StatelessWidget {
       title: 'Dispositivos monitorados',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness:Brightness.dark,
-        primarySwatch: Colors.red,
+        // brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black87,
+        primaryColor: Colors.red[900],
+        primaryColorDark: Colors.black,
+        cursorColor: Colors.red[900],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

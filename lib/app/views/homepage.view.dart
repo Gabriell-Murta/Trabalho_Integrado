@@ -17,9 +17,7 @@ class DevicePanelItem {
   bool IsExpanded;
 
   DevicePanelItem(
-      {this.ExpandedValue,
-      this.HeaderValue,
-      this.IsExpanded = false});
+      {this.ExpandedValue, this.HeaderValue, this.IsExpanded = false});
 }
 
 class _HomePageState extends State<HomePage> {
@@ -46,9 +44,8 @@ class _HomePageState extends State<HomePage> {
       _controller.getAll().then((data) {
         setState(() {
           _list = _controller.list;
-          list_panel=generateDevicePanelItem();
+          list_panel = generateDevicePanelItem();
         });
-
       });
     });
   }
@@ -58,7 +55,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('DISPOSITIVOS'),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
+        title: Text('Dispositivos',
+            style: TextStyle(color: Theme.of(context).primaryColorDark)),
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.search),
@@ -76,23 +75,20 @@ class _HomePageState extends State<HomePage> {
           child: _buildDevicePanel(),
         ),
       ),
-     );
-  }
-
-
-  List<DevicePanelItem> generateDevicePanelItem(){
-    return List.generate(
-      _list.length,
-            (index) => DevicePanelItem(
-            ExpandedValue:
-            'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
-            HeaderValue: _list[index].Nick,
-            )
     );
   }
 
-  Widget _buildDevicePanel() {
+  List<DevicePanelItem> generateDevicePanelItem() {
+    return List.generate(
+        _list.length,
+        (index) => DevicePanelItem(
+              ExpandedValue:
+                  'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
+              HeaderValue: _list[index].Nick,
+            ));
+  }
 
+  Widget _buildDevicePanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -113,8 +109,6 @@ class _HomePageState extends State<HomePage> {
       }).toList(),
     );
   }
-
-
 
   _displayFirstDialog(context) async {
     return showDialog(
