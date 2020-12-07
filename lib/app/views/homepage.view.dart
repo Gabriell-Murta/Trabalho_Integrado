@@ -5,30 +5,40 @@ import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/device.model.dart';
+import 'medicao.view.dart';
 
 class HomePage extends StatefulWidget {
+  var _list = List<Device>();
+  HomePage(this._list);
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(_list);
 }
 
 class DevicePanelItem {
   String ExpandedValue;
   String HeaderValue;
   bool IsExpanded;
+  Device Item;
 
   DevicePanelItem(
-      {this.ExpandedValue, this.HeaderValue, this.IsExpanded = false});
+      {this.ExpandedValue,
+      this.HeaderValue,
+      this.IsExpanded = false,
+      this.Item});
 }
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   var _deviceController = TextEditingController();
-  var _list = List<Device>();
   var _controller = DeviceController();
   var selectedDate = DateTime.now();
+  var _list = List<Device>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //final SnackBar snackBar = const flutter_search_bar;
   var list_panel = List<DevicePanelItem>();
+
+  _HomePageState(this._list);
+
   @override
   void initState() {
     super.initState();
@@ -40,14 +50,18 @@ class _HomePageState extends State<HomePage> {
         value.setBool('firstTime', false);
       }
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.getAll().then((data) {
-        setState(() {
-          _list = _controller.list;
-          list_panel = generateDevicePanelItem();
-        });
-      });
+
+    setState(() {
+      list_panel = generateDevicePanelItem();
     });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _controller.getAll().then((data) {
+    //     setState(() {
+    //       _list = _controller.list;
+    //       list_panel = generateDevicePanelItem();
+    //     });
+    //   });
+    // });
   }
 
   @override
@@ -58,19 +72,15 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
         title: Text('Dispositivos',
             style: TextStyle(color: Theme.of(context).primaryColorDark)),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.search),
-              tooltip: "Pesquisa",
-              onPressed: () {})
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //       icon: const Icon(Icons.search),
+        //       tooltip: "Pesquisa",
+        //       onPressed: () {})
+        // ],
       ),
-      // body: Scrollbar(
-      //   child: ListView(
-      //     children: [for (int i = 0; i < _list.length; i++) DeviceList()],
-      //   ),
-      // ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Container(
           child: _buildDevicePanel(),
         ),
@@ -82,13 +92,31 @@ class _HomePageState extends State<HomePage> {
     return List.generate(
         _list.length,
         (index) => DevicePanelItem(
-              ExpandedValue:
-                  'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
-              HeaderValue: _list[index].Nick,
-            ));
+            ExpandedValue:
+                'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
+            HeaderValue: _list[index].Nick,
+            IsExpanded: false,
+            Item: _list[index]));
   }
 
   Widget _buildDevicePanel() {
+    if (_list.length == 0) {
+      print("to aqui");
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Você ainda não possui dispositivos cadastrados.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 30, color: Theme.of(context).primaryColor)),
+          Text("Favor entrar em contato com comercial@tapegandofogo.br",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 30, color: Theme.of(context).primaryColor))
+        ],
+      );
+    }
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -103,8 +131,16 @@ class _HomePageState extends State<HomePage> {
               );
             },
             body: ListTile(
-              title: Text(item.ExpandedValue),
-            ),
+                title: Text(item.ExpandedValue),
+                trailing: IconButton(
+                    icon: Icon(Icons.details),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MedicaoPage(item.Item.Measurements)));
+                    })),
             isExpanded: item.IsExpanded);
       }).toList(),
     );

@@ -17,11 +17,11 @@ class DeviceController {
 
   Future<void> getByLogin(String login, String senha) async {
     try {
-      final list = await repository.getByLogin(login, senha);
+      final listTemp = await repository.getByLogin(login, senha);
       list.clear();
-      list.addAll(list);
+      list.addAll(listTemp);
     } catch (e) {
-      print("Erro: " + e.toString());
+      throw new Exception("Erro ao fazer login");
     }
   }
 

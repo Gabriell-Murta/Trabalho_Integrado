@@ -52,19 +52,22 @@ class DeviceRepository {
     }
   }
 
-  Future<List<Device>> getByLogin(String senha, String login) async {
+  Future<List<Device>> getByLogin(String login, String senha) async {
     try {
-      var response = await http.get(Uri.encodeFull(
-          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices?cpf=$login&senha$senha"));
+      var url =
+          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices?cpf=$login&senha=$senha";
+      var response = await http.get(Uri.encodeFull(url));
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as List)
+        var temp = (jsonDecode(response.body) as List)
             .map((x) => Device.fromJson(x))
             .toList();
+        return temp;
       }
+      print(response.statusCode);
 
-      throw new Exception();
+      throw new Exception("Erro ao fazer login");
     } catch (e) {
-      print("FUDEU");
+      print("FUDEU Login" + e);
 
       return new List<Device>();
     }

@@ -7,7 +7,6 @@ import 'package:mvc_persistence/app/views/homepage.view.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'cadastro.view.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -82,10 +81,9 @@ class _LoginPageState extends State<LoginPage> {
             hintText: "Informe o $field"));
   }
 
-
   Container containerButton(BuildContext context, String title, bool inLogin) {
     return Container(
-      height:40.0,
+      height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
       child: RaisedButton(
         color: Theme.of(context).primaryColor,
@@ -135,12 +133,49 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.getByLogin(login, senha).then((data) {
           setState(() {
+            print("aquiii");
             _list = _controller.list;
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HomePage(_list)));
           });
+        }).catchError((onError) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Erro ao fazer login"),
+                  content: Text("Confira seu CPF/CNPJ e a sua senha!"),
+                  actions: <Widget>[
+                    FlatButton(
+                        child: Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          //Navigator.of(context).pop();
+                        })
+                  ],
+                );
+              });
         });
       });
     }
+  }
+
+  _showAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Erro"),
+            content: Text("Dados inválidos!"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
+                  })
+            ],
+          );
+        });
   }
 }
