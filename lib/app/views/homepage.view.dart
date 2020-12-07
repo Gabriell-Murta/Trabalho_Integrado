@@ -72,24 +72,18 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
         title: Text('Dispositivos',
             style: TextStyle(color: Theme.of(context).primaryColorDark)),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.search),
-              tooltip: "Pesquisa",
-              onPressed: () {})
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //       icon: const Icon(Icons.search),
+        //       tooltip: "Pesquisa",
+        //       onPressed: () {})
+        // ],
       ),
-      // body: Scrollbar(
-      //   child: ListView(
-      //     children: [for (int i = 0; i < _list.length; i++) DeviceList()],
-      //   ),
-      // ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
-        child: _buildDevicePanel(),
-
-        // child: Container(
-        // ),
+        child: Container(
+          child: _buildDevicePanel(),
+        ),
       ),
     );
   }

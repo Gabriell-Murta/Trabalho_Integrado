@@ -63,8 +63,9 @@ class DeviceRepository {
             .toList();
         return temp;
       }
+      print(response.statusCode);
 
-      throw new Exception();
+      throw new Exception("Erro ao fazer login");
     } catch (e) {
       print("FUDEU Login" + e);
 

@@ -38,7 +38,7 @@ class _MedicaoPageState extends State<MedicaoPage> {
   void initState() {
     super.initState();
 
-    // initializeDateFormatting('pt_BR', null).then((_) => {});
+    initializeDateFormatting('pt_BR', null).then((_) => {});
 
     setState(() {
       list_panel = generateMedicaoPanelItem();
@@ -69,7 +69,9 @@ class _MedicaoPageState extends State<MedicaoPage> {
         (index) => MedicaoPanelItem(
             ExpandedValue:
                 'ID: ${_list[index].IdMedicao}\nTemperatura: ${_list[index].Temperature}° C\nFumaça: ${_list[index].Smoke}\nGás: ${_list[index].Gas}\nUmidade: ${_list[index].AirHumidity}\nRisco: ${_list[index].Danger}',
-            HeaderValue: 'data'));
+            HeaderValue: new DateFormat()
+                .addPattern("dd/MM/yyyy HH:mm:ss")
+                .format(_list[index].UpdateDate)));
   }
 
   Widget _buildDevicePanel() {

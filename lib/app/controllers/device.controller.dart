@@ -18,11 +18,10 @@ class DeviceController {
   Future<void> getByLogin(String login, String senha) async {
     try {
       final listTemp = await repository.getByLogin(login, senha);
-      // print("l: ${listTemp.length}");
       list.clear();
       list.addAll(listTemp);
     } catch (e) {
-      print("Erro aquiiii ooo: " + e.toString());
+      throw new Exception("Erro ao fazer login");
     }
   }
 
