@@ -182,8 +182,8 @@ class _LoginPageState extends State<LoginPage> {
         _controller.getByLogin(login, senha).then((data) {
           setState(() {
             _list = _controller.list;
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HomePage(_list)));
           });
         });
       });
