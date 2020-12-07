@@ -159,23 +159,4 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-
-  _showAlert() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Erro"),
-            content: Text("Dados inválidos!"),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text("OK"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    //Navigator.of(context).pop();
-                  })
-            ],
-          );
-        });
-  }
 }
