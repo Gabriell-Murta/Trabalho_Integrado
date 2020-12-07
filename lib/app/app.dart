@@ -8,12 +8,13 @@ class MyApp extends StatelessWidget {
       title: 'Dispositivos monitorados',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.brown[800],
-        primaryColor: Colors.red[900],
-        primaryColorDark: Colors.black,
-        cursorColor: Colors.red[900],
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.white10,
+        primaryColor: Colors.deepOrangeAccent,
+        primaryColorDark: Colors.white,
+        cursorColor: Colors.orangeAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        accentColor: Colors.deepOrange,
       ),
       home: LoginPage(),
     );

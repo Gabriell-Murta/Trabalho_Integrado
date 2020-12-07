@@ -19,22 +19,7 @@ class ClientRepository {
     );
   }
 
-  Future create(Client item) async {
-    try {
-      var client = item.toMap();
-      client.remove("IdClient");
-      final Database db = await _getDB();
-      await db.insert(
-        TABLE_NAME,
-        client,
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<List<Client>> getAll() async {
+   Future<List<Client>> getAll() async {
     try {
       var response =
       await http.get(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"));
@@ -46,9 +31,25 @@ class ClientRepository {
 
       throw new Exception();
     } catch (e) {
-      print("FUDEU");
+      print("FUDEU CLIENT REPOSITORIO GETALL");
 
       return new List<Client>();
+    }
+  }
+  Future<bool> Create(Client client) async {
+    try {
+      var response =
+      await http.put(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
+      print("status code:${response.statusCode}");
+      if (response.statusCode == 201) {
+        return true;
+      }
+
+      throw new Exception();
+    } catch (e) {
+      print("FUDEU CLIENT REPOSITORIO CREATE: ${e.toString()}");
+
+      return false;
     }
   }
 

@@ -15,10 +15,10 @@ class ClientController {
     }
   }
 
-  Future<void> create(Client client) async {
+  Future<void> Create(Client client) async {
     try {
       list.add(client);
-      await repository.create(client);
+      await repository.Create(client);
     } catch (e) {
       print("Erro: " + e.toString());
     }

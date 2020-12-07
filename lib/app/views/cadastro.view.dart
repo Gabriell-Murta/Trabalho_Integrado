@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:mvc_persistence/app/controllers/client.controller.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/repositories/client.repository.dart';
 
@@ -17,6 +16,8 @@ class CadastroPage extends StatelessWidget {
   final _cidade = TextEditingController();
   final _estado = TextEditingController();
   final _telefone = TextEditingController();
+  var _controllerClient = ClientController();
+  Client client;
   BuildContext _context;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -26,10 +27,14 @@ class CadastroPage extends StatelessWidget {
     _context = context;
     return Scaffold(
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
+          iconTheme: IconThemeData(color: Theme
+              .of(context)
+              .primaryColorDark),
           title: Text(
             "Cadastro",
-            style: TextStyle(color: Theme.of(context).primaryColorDark),
+            style: TextStyle(color: Theme
+                .of(context)
+                .primaryColorDark),
           )),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -39,6 +44,8 @@ class CadastroPage extends StatelessWidget {
   }
 
   _body(BuildContext context) {
+    print("cadastro");
+
     return Form(
       key: _formKey,
       child: Column(
@@ -63,65 +70,123 @@ class CadastroPage extends StatelessWidget {
   _editText(String field, TextEditingController controller, bool inSenha) {
     return TextFormField(
       controller: controller,
-      validator: (s) => _validate(s, field),
       obscureText: inSenha,
       style: TextStyle(
         fontSize: 22,
-        color: Theme.of(_context).primaryColor,
+        color: Theme
+            .of(_context)
+            .primaryColor,
       ),
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(_context).primaryColor)),
+            borderSide: BorderSide(color: Theme
+                .of(_context)
+                .primaryColor)),
         labelText: field,
         labelStyle: TextStyle(
-          fontSize: 22,
-          color: Theme.of(_context).primaryColor,
+          fontSize: 18,
+          color: Theme
+              .of(_context)
+              .primaryColor,
         ),
       ),
     );
   }
 
-  String _validate(String text, String field) {
-    if (text.isEmpty) {
-      return "Digite $field";
+  bool ValidateEmpty(Client client, final confirma_senha) {
+    if (client.Nome == "" || client.Email == "" ||
+        client.Logradouro == "" || client.Bairro == ""  || client.Cidade == "" ||
+        client.Estado == "" || client.Telefone == "" ||
+        client.CpfCnpj == "" || client.Senha == "" ||
+        client.Numero == null || client.Senha != confirma_senha) {
+      return false;
     }
-    return null;
+
+    else
+      return true;
   }
 
   Container containerButton(BuildContext context) {
+    print("Terminou o cadastro");
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
       child: RaisedButton(
-        color: Theme.of(context).primaryColor,
+        color: Theme
+            .of(context)
+            .primaryColor,
         child: Text("Salvar",
             style: TextStyle(
-                color: Theme.of(context).primaryColorDark, fontSize: 20.0)),
+                color: Theme
+                    .of(context)
+                    .primaryColorDark, fontSize: 20.0)),
         onPressed: () {
-          _onClickCadastro();
+          _onClickCadastro(context);
         },
       ),
     );
   }
 
-  _onClickCadastro() {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+  _onClickCadastro(BuildContext context) {
+    print("vai salvar");
+    print(_senha.text);
+    print(_confirmaSenha.text);
+    var num_teste;
 
-    Client cli = new Client(
+    try{
+      num_teste= int.parse(_numero.text);}
+    catch(e){
+      num_teste = null;
+    }
+    client = new Client(
         IdClient: 0,
         Nome: _nome.text,
         Email: _email.text,
         Logradouro: _logradouro.text,
         Bairro: _bairro.text,
-        Numero: int.parse(_numero.text),
+        Numero: num_teste,
         Cidade: _cidade.text,
         Estado: _estado.text,
         Telefone: _telefone.text,
         CpfCnpj: _cpfCnpj.text,
         Senha: _senha.text);
+print(client.toJson());
+    if (ValidateEmpty(client, _confirmaSenha.text)) {
+      _controllerClient.Create(client);
+      showDialog(context: context, builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(""),
+          content: Text("Cliente cadastrado com sucesso!"),
+          actions: <Widget>[
+            FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                })
 
-    ClientRepository().create(cli);
+          ],
+        );
+      }
+      );
+    }
+    else {
+      showDialog(context: context, builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Erro"),
+          content: Text("Dados inválidos!"),
+          actions: <Widget>[
+            FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                })
+
+          ],
+        );
+      }
+      );
+    }
   }
 }
