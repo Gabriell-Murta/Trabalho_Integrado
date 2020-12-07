@@ -4,9 +4,13 @@ Aplicativo desenvolvido em grupo para o Trabalho Integrado. Esther e Flávia : V
 link do swagger:
 https://tapegandofogobicho.azurewebsites.net/swagger/index.html
 
+## Contexto
+
+Desenvolver um dispositivo IoT conectado à nuvem através de MQTT, que pode ser posicionado em locais estratégicos para detecção e previsão de queimadas, com acesso a um aplicativo mobile de monitoramento de todos os dispositivos, suas localizações e possíveis queimadas. Os dados serão armazenados em um banco MySQL, e acessáveis através de um backend baseado em C#, e hospedado em nuvem.
+
 ## Documentação
 
-O aplicativo consiste de uma única tela, na qual é possível visualizar os nomes, ID e localização dos dispositivos. Idealmente, é uma ferramenta para vizualizar os dispositivos de monitoramento dos clientes.
+O aplicativo consiste de uma única tela, na qual é possível visualizar os nomes, ID e localização dos dispositivos. Idealmente, é uma ferramenta para visualizar os dispositivos de monitoramento dos clientes.
 
 ## Estrutura
 1. main.dart (Inicializa o app);
