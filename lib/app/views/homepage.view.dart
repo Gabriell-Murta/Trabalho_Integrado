@@ -132,8 +132,10 @@ class _HomePageState extends State<HomePage> {
             },
             body: ListTile(
                 title: Text(item.ExpandedValue),
-                trailing: IconButton(
-                    icon: Icon(Icons.details),
+                trailing: FlatButton(
+                    // icon: Icon(Icons.details),
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text("Ver medições"),
                     onPressed: () {
                       Navigator.push(
                           context,

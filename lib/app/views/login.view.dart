@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     return Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             _textFormField("Cpf/Cnpj", _tedLogin),
@@ -72,8 +72,9 @@ class _LoginPageState extends State<LoginPage> {
         keyboardType: TextInputType.text,
         style: TextStyle(fontSize: 22, color: Theme.of(_context).primaryColor),
         decoration: InputDecoration(
+            // contentPadding: const EdgeInsets.all(20.0),
             border: OutlineInputBorder(),
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(_context).primaryColor)),
             labelText: field,
             labelStyle: TextStyle(

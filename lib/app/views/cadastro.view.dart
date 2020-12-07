@@ -27,14 +27,10 @@ class CadastroPage extends StatelessWidget {
     _context = context;
     return Scaffold(
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Theme
-              .of(context)
-              .primaryColorDark),
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
           title: Text(
             "Cadastro",
-            style: TextStyle(color: Theme
-                .of(context)
-                .primaryColorDark),
+            style: TextStyle(color: Theme.of(context).primaryColorDark),
           )),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -49,6 +45,8 @@ class CadastroPage extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _editText("Nome", _nome, false),
           _editText("Cpf/Cnpj", _cpfCnpj, false),
@@ -68,41 +66,43 @@ class CadastroPage extends StatelessWidget {
   }
 
   _editText(String field, TextEditingController controller, bool inSenha) {
-    return TextFormField(
-      controller: controller,
-      obscureText: inSenha,
-      style: TextStyle(
-        fontSize: 22,
-        color: Theme
-            .of(_context)
-            .primaryColor,
-      ),
-      decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme
-                .of(_context)
-                .primaryColor)),
-        labelText: field,
-        labelStyle: TextStyle(
-          fontSize: 18,
-          color: Theme
-              .of(_context)
-              .primaryColor,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: controller,
+        obscureText: inSenha,
+        style: TextStyle(
+          fontSize: 22,
+          color: Theme.of(_context).primaryColor,
+        ),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(_context).primaryColor)),
+          labelText: field,
+          labelStyle: TextStyle(
+            fontSize: 18,
+            color: Theme.of(_context).primaryColor,
+          ),
         ),
       ),
     );
   }
 
   bool ValidateEmpty(Client client, final confirma_senha) {
-    if (client.Nome == "" || client.Email == "" ||
-        client.Logradouro == "" || client.Bairro == ""  || client.Cidade == "" ||
-        client.Estado == "" || client.Telefone == "" ||
-        client.CpfCnpj == "" || client.Senha == "" ||
-        client.Numero == null || client.Senha != confirma_senha) {
+    if (client.Nome == "" ||
+        client.Email == "" ||
+        client.Logradouro == "" ||
+        client.Bairro == "" ||
+        client.Cidade == "" ||
+        client.Estado == "" ||
+        client.Telefone == "" ||
+        client.CpfCnpj == "" ||
+        client.Senha == "" ||
+        client.Numero == null ||
+        client.Senha != confirma_senha) {
       return false;
-    }
-
-    else
+    } else
       return true;
   }
 
@@ -112,14 +112,10 @@ class CadastroPage extends StatelessWidget {
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
       child: RaisedButton(
-        color: Theme
-            .of(context)
-            .primaryColor,
+        color: Theme.of(context).primaryColor,
         child: Text("Salvar",
             style: TextStyle(
-                color: Theme
-                    .of(context)
-                    .primaryColorDark, fontSize: 20.0)),
+                color: Theme.of(context).primaryColorDark, fontSize: 20.0)),
         onPressed: () {
           _onClickCadastro(context);
         },
@@ -133,9 +129,9 @@ class CadastroPage extends StatelessWidget {
     print(_confirmaSenha.text);
     var num_teste;
 
-    try{
-      num_teste= int.parse(_numero.text);}
-    catch(e){
+    try {
+      num_teste = int.parse(_numero.text);
+    } catch (e) {
       num_teste = null;
     }
     client = new Client(
@@ -150,43 +146,42 @@ class CadastroPage extends StatelessWidget {
         Telefone: _telefone.text,
         CpfCnpj: _cpfCnpj.text,
         Senha: _senha.text);
-print(client.toJson());
+    print(client.toJson());
     if (ValidateEmpty(client, _confirmaSenha.text)) {
       _controllerClient.Create(client);
-      showDialog(context: context, builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(""),
-          content: Text("Cliente cadastrado com sucesso!"),
-          actions: <Widget>[
-            FlatButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                })
-
-          ],
-        );
-      }
-      );
-    }
-    else {
-      showDialog(context: context, builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Erro"),
-          content: Text("Dados inválidos!"),
-          actions: <Widget>[
-            FlatButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  //Navigator.of(context).pop();
-                })
-
-          ],
-        );
-      }
-      );
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(""),
+              content: Text("Cliente cadastrado com sucesso!"),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          });
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Erro"),
+              content: Text("Dados inválidos!"),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      //Navigator.of(context).pop();
+                    })
+              ],
+            );
+          });
     }
   }
 }
