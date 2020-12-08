@@ -90,6 +90,7 @@ class CadastroPage extends StatelessWidget {
   }
 
   bool ValidateEmpty(Client client, final confirma_senha) {
+    print("validate");
     if (client.Nome == "" ||
         client.Email == "" ||
         client.Logradouro == "" ||
@@ -101,8 +102,10 @@ class CadastroPage extends StatelessWidget {
         client.Senha == "" ||
         client.Numero == null ||
         client.Senha != confirma_senha) {
+      //print("validate if false");
       return false;
     } else
+      //print("validate if true");
       return true;
   }
 
@@ -123,7 +126,7 @@ class CadastroPage extends StatelessWidget {
     );
   }
 
-  _onClickCadastro(BuildContext context) {
+  _onClickCadastro(BuildContext context) async {
     print("vai salvar");
     print(_senha.text);
     print(_confirmaSenha.text);
@@ -148,23 +151,65 @@ class CadastroPage extends StatelessWidget {
         Senha: _senha.text);
     print(client.toJson());
     if (ValidateEmpty(client, _confirmaSenha.text)) {
-      _controllerClient.Create(client);
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(""),
-              content: Text("Cliente cadastrado com sucesso!"),
-              actions: <Widget>[
-                FlatButton(
-                    child: Text("OK"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    })
-              ],
-            );
-          });
+
+      var createReturn = await _controllerClient.Create(client);
+      print("retorno create = $createReturn");
+
+      if (createReturn == 1){
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(""),
+                content: Text("Cliente cadastrado com sucesso!"),
+                actions: <Widget>[
+                  FlatButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      })
+                ],
+              );
+            });
+      }
+      if (createReturn == 2){
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Erro"),
+                content: Text("Credenciais já em uso!"),
+                actions: <Widget>[
+                  FlatButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      })
+                ],
+              );
+            });
+      }
+      if (createReturn == 3){
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Erro"),
+                content: Text("Impossível cadastrar o cliente!\nTente novamente mais tarde."),
+                actions: <Widget>[
+                  FlatButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      })
+                ],
+              );
+            });
+      }
+
     } else {
       showDialog(
           context: context,

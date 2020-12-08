@@ -15,13 +15,14 @@ class ClientController {
     }
   }
 
-  Future<void> Create(Client client) async {
+  Future<int> Create(Client client) async {
     try {
       list.add(client);
-      await repository.Create(client);
+      return await repository.Create(client);
     } catch (e) {
       print("Erro: " + e.toString());
     }
+
   }
 
   Future<void> delete(int id) async {

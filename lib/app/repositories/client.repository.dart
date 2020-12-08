@@ -36,20 +36,28 @@ class ClientRepository {
       return new List<Client>();
     }
   }
-  Future<bool> Create(Client client) async {
+  Future<int> Create(Client client) async {
     try {
       var response =
       await http.put(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
       print("status code:${response.statusCode}");
+      print("status body:${response.body}");
+      print("IF1");
       if (response.statusCode == 201) {
-        return true;
+        print("IF1 entrou");
+        return 1;
+      }
+      print("IF2");
+      if (response.statusCode == 400){
+        print("IF2 entrou");
+        return 2;
       }
 
       throw new Exception();
     } catch (e) {
       print("FUDEU CLIENT REPOSITORIO CREATE: ${e.toString()}");
 
-      return false;
+      return 3;
     }
   }
 
