@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_persistence/app/controllers/client.controller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mvc_persistence/app/controllers/ibge.controller.dart';
 import 'package:mvc_persistence/app/models/client.model.dart';
-import 'package:mvc_persistence/app/repositories/client.repository.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:mvc_persistence/app/models/ibge.model.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 
-class CadastroPage extends StatelessWidget {
+class CadastroPage extends StatefulWidget {
+  @override
+  _CadastroPageState createState() => _CadastroPageState();
+}
+
+class _CadastroPageState extends State<CadastroPage> {
   final _nome = TextEditingController();
   final _cpfCnpj = TextEditingController();
   final _email = TextEditingController();
@@ -14,13 +22,38 @@ class CadastroPage extends StatelessWidget {
   final _numero = TextEditingController();
   final _bairro = TextEditingController();
   final _cidade = TextEditingController();
-  final _estado = TextEditingController();
+  var _estado = TextEditingController();
   final _telefone = TextEditingController();
   var _controllerClient = ClientController();
+  var teste = "MG";
   Client client;
   BuildContext _context;
+  List<Estado> _listaEstado = List<Estado>();
+
+  final _maskCpfCnpj = new MaskTextInputFormatter(
+      mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
+  final _maskTelefone = new MaskTextInputFormatter(
+      mask: '(##) # ####-####', filter: {'#': RegExp(r'[0-9]')});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _estado.text = "MG";
+    // setState(() {
+    var _controller = EstadoController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _listaEstado = [new Estado(id: 1, nome: 'Minas', sigla: 'MG')];
+      _controller.getEstados().then((data) => {
+            setState(() {
+              _listaEstado = _controller.list;
+              print(_listaEstado[0].nome);
+            })
+          });
+    });
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +73,6 @@ class CadastroPage extends StatelessWidget {
   }
 
   _body(BuildContext context) {
-    print("cadastro");
-
     return Form(
       key: _formKey,
       child: Column(
@@ -54,11 +85,11 @@ class CadastroPage extends StatelessWidget {
           _editText("Senha", _senha, true),
           _editText("Confirma Senha", _confirmaSenha, true),
           _editText("Telefone", _telefone, false),
+          _dropDownFieldEstado("Estado", _estado),
+          _editText("Cidade", _cidade, false),
+          _editText("Bairro", _bairro, false),
           _editText("Logradouro", _logradouro, false),
           _editText("Número", _numero, false),
-          _editText("Bairro", _bairro, false),
-          _editText("Cidade", _cidade, false),
-          _editText("Estado", _estado, false),
           containerButton(context)
         ],
       ),
@@ -75,6 +106,22 @@ class CadastroPage extends StatelessWidget {
           fontSize: 22,
           color: Theme.of(_context).primaryColor,
         ),
+        inputFormatters: field == 'Cpf/Cnpj'
+            ? [_maskCpfCnpj]
+            : field == 'Telefone'
+                ? [_maskTelefone]
+                : field == 'Número'
+                    ? [new MaskTextInputFormatter(mask: '#####')]
+                    : [],
+        onChanged: (value) {
+          if (field == 'Cpf/Cnpj') {
+            if (value.length < 14) {
+              _maskCpfCnpj.updateMask(mask: "###.###.###-##");
+            } else {
+              _maskCpfCnpj.updateMask(mask: "##.###.###/####-##");
+            }
+          }
+        },
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           enabledBorder: OutlineInputBorder(
@@ -89,8 +136,59 @@ class CadastroPage extends StatelessWidget {
     );
   }
 
+  _dropDownFieldEstado(String field, TextEditingController controller) {
+    // print("drop ${_listaEstado[0].nome}");
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InputDecorator(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(_context).primaryColor)),
+            labelText: field,
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Theme.of(_context).primaryColor,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              value: _estado.text,
+              isDense: true,
+              onChanged: (String newValue) {
+                setState(() {
+                  teste = newValue;
+                  _estado.text = newValue;
+                  // state.didChange(newValue);
+                });
+              },
+              items: _listaEstado.map((value) {
+                return DropdownMenuItem(
+                  value: value.sigla,
+                  child: Text(value.sigla),
+                );
+              }).toList(),
+            ),
+          )),
+    );
+    // return DropDownFormField(
+    //   titleText: field,
+    //   value: teste,
+    //   onSaved: (newValue) => {
+    //     setState(() {
+    //       teste = newValue;
+    //     })
+    //   },
+    //   onChanged: (newValue) => {
+    //     setState(() => {teste = newValue})
+    //   },
+    //   dataSource: _listaEstado.map((e) => e.toMap()).toList(),
+    //   textField: 'sigla',
+    //   valueField: 'sigla',
+    // );
+  }
+
   bool ValidateEmpty(Client client, final confirma_senha) {
-    print("validate");
     if (client.Nome == "" ||
         client.Email == "" ||
         client.Logradouro == "" ||
@@ -110,7 +208,6 @@ class CadastroPage extends StatelessWidget {
   }
 
   Container containerButton(BuildContext context) {
-    print("Terminou o cadastro");
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
@@ -151,11 +248,10 @@ class CadastroPage extends StatelessWidget {
         Senha: _senha.text);
     print(client.toJson());
     if (ValidateEmpty(client, _confirmaSenha.text)) {
-
       var createReturn = await _controllerClient.Create(client);
       print("retorno create = $createReturn");
 
-      if (createReturn == 1){
+      if (createReturn == 1) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -173,7 +269,7 @@ class CadastroPage extends StatelessWidget {
               );
             });
       }
-      if (createReturn == 2){
+      if (createReturn == 2) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -191,13 +287,14 @@ class CadastroPage extends StatelessWidget {
               );
             });
       }
-      if (createReturn == 3){
+      if (createReturn == 3) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("Erro"),
-                content: Text("Impossível cadastrar o cliente!\nTente novamente mais tarde."),
+                content: Text(
+                    "Impossível cadastrar o cliente!\nTente novamente mais tarde."),
                 actions: <Widget>[
                   FlatButton(
                       child: Text("OK"),
@@ -209,7 +306,6 @@ class CadastroPage extends StatelessWidget {
               );
             });
       }
-
     } else {
       showDialog(
           context: context,

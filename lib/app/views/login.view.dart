@@ -15,6 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _tedLogin = TextEditingController();
   final _tedSenha = TextEditingController();
+  final _maskCpfCnpj = new MaskTextInputFormatter(
+      mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
   BuildContext _context;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -63,14 +65,33 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
+  // List<TextInputFormatter> _inputMask(String field, String text) {
+  //   print(text);
+  //   if (field == 'senha')
+  //     return [];
+  //   else if (text.length < 13)
+  //     return _maskCpf;
+  //   else
+  //     return _maskCnpj;
+  // }
+
   _textFormField(String field, TextEditingController controller) {
     return TextFormField(
-        // inputFormatters: new MaskTextInputFormatter(mask: ),
         controller: controller,
         obscureText: field == "Senha",
         validator: (s) => _validaInput(s, field),
         keyboardType: TextInputType.text,
         style: TextStyle(fontSize: 22, color: Theme.of(_context).primaryColor),
+        inputFormatters: field == 'Senha' ? [] : [_maskCpfCnpj],
+        onChanged: (value) {
+          if (field != 'Senha') {
+            if (value.length < 14) {
+              _maskCpfCnpj.updateMask(mask: "###.###.###-##");
+            } else {
+              _maskCpfCnpj.updateMask(mask: "##.###.###/####-##");
+            }
+          }
+        },
         decoration: InputDecoration(
             // contentPadding: const EdgeInsets.all(20.0),
             border: OutlineInputBorder(),
