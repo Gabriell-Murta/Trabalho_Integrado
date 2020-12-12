@@ -25,7 +25,6 @@ class _CadastroPageState extends State<CadastroPage> {
   var _estado = TextEditingController();
   final _telefone = TextEditingController();
   var _controllerClient = ClientController();
-  var teste = "MG";
   Client client;
   BuildContext _context;
   List<Estado> _listaEstado = List<Estado>();
@@ -40,7 +39,7 @@ class _CadastroPageState extends State<CadastroPage> {
   @override
   void initState() {
     super.initState();
-    _estado.text = "MG";
+    _estado.text = "AC";
     // setState(() {
     var _controller = EstadoController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -157,7 +156,6 @@ class _CadastroPageState extends State<CadastroPage> {
               isDense: true,
               onChanged: (String newValue) {
                 setState(() {
-                  teste = newValue;
                   _estado.text = newValue;
                   // state.didChange(newValue);
                 });
@@ -171,21 +169,6 @@ class _CadastroPageState extends State<CadastroPage> {
             ),
           )),
     );
-    // return DropDownFormField(
-    //   titleText: field,
-    //   value: teste,
-    //   onSaved: (newValue) => {
-    //     setState(() {
-    //       teste = newValue;
-    //     })
-    //   },
-    //   onChanged: (newValue) => {
-    //     setState(() => {teste = newValue})
-    //   },
-    //   dataSource: _listaEstado.map((e) => e.toMap()).toList(),
-    //   textField: 'sigla',
-    //   valueField: 'sigla',
-    // );
   }
 
   bool ValidateEmpty(Client client, final confirma_senha) {

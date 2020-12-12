@@ -11,7 +11,7 @@ class IbgeRepository {
   Future<List<Estado>> getEstados() async {
     try {
       var response = await http.get(Uri.encodeFull(
-          "https://servicodados.ibge.gov.br/api/v1/localidades/estados"));
+          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"));
       // print(response.body);
       return (jsonDecode(response.body) as List)
           .map((x) => Estado.fromJson(x))
