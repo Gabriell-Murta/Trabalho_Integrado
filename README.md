@@ -1,8 +1,18 @@
 # Dispositivo
 
-Aplicativo desenvolvido em grupo para o Trabalho Integrado. Esther e Flávia : View e model | Gabriell e José : repository | Hugo e João : controllers
-link do swagger:
-https://tapegandofogobicho.azurewebsites.net/swagger/index.html
+Repositório - https://github.com/joaoafneto/TaPegandoFogoBicho
+Swagger - https://tapegandofogobicho.azurewebsites.net/swagger/index.html
+
+Os componentes do grupo : Gabriell Murta , José Willian , João Antonio , Hugo Brandão, Flavia Viera, Esther Favero
+
+Divisão das tarefas no aplicativo:
+Esther e Flávia : View e Model 
+Gabriell e José : Repository 
+Hugo e João : Controllers
+
+Dispositivo : Hugo Brandão
+Banco de Dados : Gabriell Murta , José Willian
+Backend : João Antonio
 
 ## Contexto
 
