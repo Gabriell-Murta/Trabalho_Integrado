@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // List<TextInputFormatter> _inputMask(String field, String text) {
-  //   print(text);
   //   if (field == 'senha')
   //     return [];
   //   else if (text.length < 13)
@@ -85,8 +84,8 @@ class _LoginPageState extends State<LoginPage> {
         inputFormatters: field == 'Senha' ? [] : [_maskCpfCnpj],
         onChanged: (value) {
           if (field != 'Senha') {
-            if (value.length < 14) {
-              _maskCpfCnpj.updateMask(mask: "###.###.###-##");
+            if (value.length < 15) {
+              _maskCpfCnpj.updateMask(mask: "###.###.###-###");
             } else {
               _maskCpfCnpj.updateMask(mask: "##.###.###/####-##");
             }
@@ -127,8 +126,6 @@ class _LoginPageState extends State<LoginPage> {
     final login = _tedLogin.text;
     final senha = _tedSenha.text;
 
-    print("Login: $login , Senha: $senha ");
-
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -155,7 +152,6 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.getByLogin(login, senha).then((data) {
           setState(() {
-            print("aquiii");
             _list = _controller.list;
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HomePage(_list)));

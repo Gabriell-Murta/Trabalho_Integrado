@@ -54,14 +54,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       list_panel = generateDevicePanelItem();
     });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _controller.getAll().then((data) {
-    //     setState(() {
-    //       _list = _controller.list;
-    //       list_panel = generateDevicePanelItem();
-    //     });
-    //   });
-    // });
   }
 
   @override
@@ -72,12 +64,6 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColorDark),
         title: Text('Dispositivos',
             style: TextStyle(color: Theme.of(context).primaryColorDark)),
-        // actions: <Widget>[
-        //   IconButton(
-        //       icon: const Icon(Icons.search),
-        //       tooltip: "Pesquisa",
-        //       onPressed: () {})
-        // ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -101,19 +87,25 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDevicePanel() {
     if (_list.length == 0) {
-      print("to aqui");
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Você ainda não possui dispositivos cadastrados.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 30, color: Theme.of(context).primaryColor)),
-          Text("Favor entrar em contato com comercial@tapegandofogo.br",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 30, color: Theme.of(context).primaryColor))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Você ainda não possui dispositivos cadastrados.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 30, color: Theme.of(context).primaryColor)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                "Favor entrar em contato com comercial@tapegandofogo.br",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 26, color: Theme.of(context).primaryColor)),
+          )
         ],
       );
     }

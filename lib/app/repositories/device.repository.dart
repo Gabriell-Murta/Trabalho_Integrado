@@ -30,7 +30,7 @@ class DeviceRepository {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -46,7 +46,7 @@ class DeviceRepository {
 
       throw new Exception();
     } catch (e) {
-      print("FUDEU");
+      print("Erro getAll Device");
 
       return new List<Device>();
     }
@@ -63,11 +63,9 @@ class DeviceRepository {
             .toList();
         return temp;
       }
-      print(response.statusCode);
-
       throw new Exception("Erro ao fazer login");
     } catch (e) {
-      print("FUDEU Login" + e);
+      print("Erro Login" + e);
 
       return new List<Device>();
     }
@@ -90,7 +88,6 @@ class DeviceRepository {
         Longitude: maps[0]['Longitude'],
       );
     } catch (ex) {
-      print(ex);
       return new Device();
     }
   }
@@ -105,7 +102,6 @@ class DeviceRepository {
         whereArgs: [item.IdDevice],
       );
     } catch (e) {
-      print(e);
       return;
     }
   }
@@ -119,7 +115,6 @@ class DeviceRepository {
         whereArgs: [id],
       );
     } catch (e) {
-      print(e);
       return;
     }
   }

@@ -12,12 +12,11 @@ class IbgeRepository {
     try {
       var response = await http.get(Uri.encodeFull(
           "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"));
-      // print(response.body);
       return (jsonDecode(response.body) as List)
           .map((x) => Estado.fromJson(x))
           .toList();
     } catch (e) {
-      print("FUDEU ${e.toString()}");
+      print("Erro IBGE ${e.toString()}");
 
       return new List<Estado>();
     }

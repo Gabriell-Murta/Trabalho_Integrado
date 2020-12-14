@@ -21,7 +21,7 @@ class Medicao {
       UpdateDate = DateTime.parse(json['updateDate']);
       Danger = json['danger'];
     } catch (e) {
-      print("AAAA ${e.toString()}");
+      print("Erro MAP medição ${e.toString()}");
     }
   }
 

@@ -19,10 +19,10 @@ class ClientRepository {
     );
   }
 
-   Future<List<Client>> getAll() async {
+  Future<List<Client>> getAll() async {
     try {
-      var response =
-      await http.get(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"));
+      var response = await http.get(Uri.encodeFull(
+          "https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"));
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
             .map((x) => Client.fromJson(x))
@@ -31,31 +31,29 @@ class ClientRepository {
 
       throw new Exception();
     } catch (e) {
-      print("FUDEU CLIENT REPOSITORIO GETALL");
+      print("Erro getAll cliente");
 
       return new List<Client>();
     }
   }
+
   Future<int> Create(Client client) async {
     try {
-      var response =
-      await http.put(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
-      print("status code:${response.statusCode}");
-      print("status body:${response.body}");
-      print("IF1");
+      var response = await http.put(
+          Uri.encodeFull(
+              "https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"),
+          body: jsonEncode(client.toJson()),
+          headers: {"Content-Type": "application/json"});
       if (response.statusCode == 201) {
-        print("IF1 entrou");
         return 1;
       }
-      print("IF2");
-      if (response.statusCode == 400){
-        print("IF2 entrou");
+      if (response.statusCode == 400) {
         return 2;
       }
 
       throw new Exception();
     } catch (e) {
-      print("FUDEU CLIENT REPOSITORIO CREATE: ${e.toString()}");
+      print("Erro cliente CREATE: ${e.toString()}");
 
       return 3;
     }
@@ -71,7 +69,7 @@ class ClientRepository {
       );
 
       return Client(
-        Nome : maps[0]['Nome'],
+        Nome: maps[0]['Nome'],
         IdClient: maps[0]['IdClient'],
         Email: maps[0]['Email'],
         Logradouro: maps[0]['Logradouro'],
@@ -84,7 +82,6 @@ class ClientRepository {
         Senha: maps[0]['Senha'],
       );
     } catch (ex) {
-      print(ex);
       return new Client();
     }
   }
@@ -99,7 +96,6 @@ class ClientRepository {
         whereArgs: [item.IdClient],
       );
     } catch (e) {
-      print(e);
       return;
     }
   }
@@ -113,7 +109,6 @@ class ClientRepository {
         whereArgs: [id],
       );
     } catch (e) {
-      print(e);
       return;
     }
   }

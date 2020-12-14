@@ -47,7 +47,6 @@ class _CadastroPageState extends State<CadastroPage> {
       _controller.getEstados().then((data) => {
             setState(() {
               _listaEstado = _controller.list;
-              print(_listaEstado[0].nome);
             })
           });
     });
@@ -136,7 +135,6 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   _dropDownFieldEstado(String field, TextEditingController controller) {
-    // print("drop ${_listaEstado[0].nome}");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InputDecorator(
@@ -183,10 +181,8 @@ class _CadastroPageState extends State<CadastroPage> {
         client.Senha == "" ||
         client.Numero == null ||
         client.Senha != confirma_senha) {
-      //print("validate if false");
       return false;
     } else
-      //print("validate if true");
       return true;
   }
 
@@ -207,9 +203,6 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   _onClickCadastro(BuildContext context) async {
-    print("vai salvar");
-    print(_senha.text);
-    print(_confirmaSenha.text);
     var num_teste;
 
     try {
@@ -229,10 +222,8 @@ class _CadastroPageState extends State<CadastroPage> {
         Telefone: _telefone.text,
         CpfCnpj: _cpfCnpj.text,
         Senha: _senha.text);
-    print(client.toJson());
     if (ValidateEmpty(client, _confirmaSenha.text)) {
       var createReturn = await _controllerClient.Create(client);
-      print("retorno create = $createReturn");
 
       if (createReturn == 1) {
         showDialog(
