@@ -19,3 +19,8 @@ O aplicativo consiste de uma única tela, na qual é possível visualizar os nom
 4. views (Armazena a página do app);
 5. repositories (Llida com as operações de escrita e leitura em arquivo);
 6. models (Declara a estrutura dos dados);
+
+## Vídeo final APP6
+
+O vídeo mostra todas as partes que são necessárias para o funcionamento do aplicativo
+https://gofile.io/d/QjXGkK
