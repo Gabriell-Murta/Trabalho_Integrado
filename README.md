@@ -1,17 +1,24 @@
 # Dispositivo
 
 Repositório - https://github.com/joaoafneto/TaPegandoFogoBicho
+
 Swagger - https://tapegandofogobicho.azurewebsites.net/swagger/index.html
 
 Os componentes do grupo : Gabriell Murta , José Willian , João Antonio , Hugo Brandão, Flavia Viera, Esther Favero
 
 Divisão das tarefas no aplicativo:
+
 Esther e Flávia : View e Model 
+
 Gabriell e José : Repository 
+
 Hugo e João : Controllers
 
+
 Dispositivo : Hugo Brandão
+
 Banco de Dados : Gabriell Murta , José Willian
+
 Backend : João Antonio
 
 ## Contexto
