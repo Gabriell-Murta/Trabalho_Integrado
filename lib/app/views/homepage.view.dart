@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_persistence/app/controllers/client.controller.dart';
+import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/controllers/device.controller.dart';
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/device.model.dart';
-import 'medicao.view.dart';
 
 class HomePage extends StatefulWidget {
-  var _list = List<Device>();
-  HomePage(this._list);
+  var _cliente = Client();
+  var _listaDipositivo = List<Device>();
+  HomePage(this._cliente,this._listaDipositivo);
   @override
-  _HomePageState createState() => _HomePageState(_list);
+  _HomePageState createState() => _HomePageState(_cliente,_listaDipositivo);
 }
 
 class DevicePanelItem {
@@ -29,15 +30,18 @@ class DevicePanelItem {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  var _deviceController = TextEditingController();
-  var _controller = DeviceController();
+  var _textDeviceController = TextEditingController();
+  var _clientController = ClientController();
+  var _deviceController = DeviceController();
   var selectedDate = DateTime.now();
-  var _list = List<Device>();
+  var _cliente = Client();
+  var _listaDipositivo = List<Device>();
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //final SnackBar snackBar = const flutter_search_bar;
   var list_panel = List<DevicePanelItem>();
 
-  _HomePageState(this._list);
+  _HomePageState(this._cliente,this._listaDipositivo);
 
   @override
   void initState() {
@@ -51,18 +55,18 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    setState(() {
-      list_panel = generateDevicePanelItem();
+   setState(() {
+     list_panel = generateDevicePanelItem();
     });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _controller.getAll().then((data) {
-    //     setState(() {
-    //       _list = _controller.list;
-    //       list_panel = generateDevicePanelItem();
-    //     });
-    //   });
-    // });
-  }
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
+    //  _deviceController.getByLogin(_cliente.IdClient).then((data) {
+    //    setState(() {
+    //      _list = _deviceController.list;
+    //      list_panel = generateDevicePanelItem();
+    //    });
+    //  });
+    //});
+}
 
   @override
   Widget build(BuildContext context) {
@@ -90,18 +94,18 @@ class _HomePageState extends State<HomePage> {
 
   List<DevicePanelItem> generateDevicePanelItem() {
     return List.generate(
-        _list.length,
+        _listaDipositivo.length,
         (index) => DevicePanelItem(
             ExpandedValue:
-                'ID: "${_list[index].IdDevice}"\nLatitude: "${_list[index].Latitude}"\nLongitude: "${_list[index].Longitude}"',
-            HeaderValue: _list[index].Nick,
+                'ID: "${_listaDipositivo[index].Nome}"\nHASHASHSHASHASHAHSHASHAHSHSA: "${_listaDipositivo[index].Nome}"\nBATA_TESTE: "${_listaDipositivo[index].Nome}"',
+            HeaderValue: _listaDipositivo[index].Nome,
             IsExpanded: false,
-            Item: _list[index]));
+            Item: _listaDipositivo[index]));
   }
 
   Widget _buildDevicePanel() {
-    if (_list.length == 0) {
-      print("to aqui");
+    if (_listaDipositivo.length == 0) {
+      print("to aqui AAAAAAAAAAAAAA");
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -123,28 +127,7 @@ class _HomePageState extends State<HomePage> {
           list_panel[index].IsExpanded = !isExpanded;
         });
       },
-      children: list_panel.map<ExpansionPanel>((DevicePanelItem item) {
-        return ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                title: Text(item.HeaderValue),
-              );
-            },
-            body: ListTile(
-                title: Text(item.ExpandedValue),
-                trailing: FlatButton(
-                    // icon: Icon(Icons.details),
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text("Ver medições"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  MedicaoPage(item.Item.Measurements)));
-                    })),
-            isExpanded: item.IsExpanded);
-      }).toList(),
+      
     );
   }
 

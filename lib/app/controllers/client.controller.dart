@@ -2,39 +2,37 @@ import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/repositories/client.repository.dart';
 
 class ClientController {
-  List<Client> list = new List<Client>();
+  Client cliente = Client();
   ClientRepository repository = new ClientRepository();
 
-  Future<void> getAll() async {
+  Future<void> getByLogin(String cpf, String senha) async {
     try {
-      final allList = await repository.getAll();
-      list.clear();
-      list.addAll(allList);
+      cliente = await repository.getByLogin(cpf,senha);
     } catch (e) {
       print("Erro: " + e.toString());
     }
   }
 
-  Future<void> Create(Client client) async {
+  Future<void> create(Client client) async {
     try {
-      list.add(client);
-      await repository.Create(client);
+      cliente = client;
+      await repository.create(client);
     } catch (e) {
       print("Erro: " + e.toString());
     }
   }
 
-  Future<void> delete(int id) async {
-    try {
-      list.removeAt(id);
-      await repository.delete(id);
-    } catch (e) {
-      print("Erro: " + e.toString());
-    }
-  }
+  // Future<void> delete(int id) async {
+  //  try {
+  //    list.removeAt(id);
+  //    await repository.delete(id);
+  //  } catch (e) {
+  //    print("Erro: " + e.toString());
+  //  }
+  // }
 
-  Future<void> update(Client client) async {
-    await repository.update(client);
-    await getAll();
-  }
+  //Future<void> update(Client client) async {
+  //  await repository.update(client);
+  //  await getAll();
+  //}
 }

@@ -2,52 +2,41 @@ import 'package:mvc_persistence/app/models/medicao.model.dart';
 
 class Device {
   int IdDevice;
-  String Nick;
-  int IdClient;
-  String Latitude;
-  String Longitude;
-  List<Medicao> Measurements;
+  String Nome;
+  DateTime Criado_em;
+  DateTime Desativado_em;
+  
 
   Device(
       {this.IdDevice,
-      this.Nick,
-      this.IdClient,
-      this.Latitude,
-      this.Longitude,
-      this.Measurements});
+      this.Nome,
+      this.Criado_em,
+      this.Desativado_em,
+      });
 
   Map<String, dynamic> toMap() {
     return {
-      'IdDevice': IdDevice,
-      'Nick': Nick,
-      'IdClient': IdClient,
-      'Latitude': Latitude,
-      'Longitude': Longitude,
-      'Measurements': Measurements
+      'id': IdDevice,
+      'mick': Nome,
+      'createdIn': Criado_em,
+      'disabledIn': Desativado_em
     };
   }
 
   Device.fromJson(Map<String, dynamic> json) {
-    print(json['measurements']);
-    Nick = json['nick'];
-    IdDevice = json['idDevice'];
-    IdClient = json['idClient'];
-    Latitude = json['latitude'];
-    Longitude = json['longitude'];
-    // Measurements = json['measurements'].map((x) => Medicao.fromJson(x)).toList();
-    List<Medicao> temp = [];
-    json['measurements'].forEach((it) => {temp.add(Medicao.fromJson(it))});
-    Measurements = temp;
+    //print(json['measurements']);
+    IdDevice = json['id'];
+    Nome = json['nick'];
+    Criado_em =  DateTime.parse(json['createdIn']);
+    Desativado_em = DateTime.parse(json['disabledIn']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Nick'] = this.Nick;
-    data['IdClient'] = this.IdClient;
-    data['IdDevice'] = this.IdDevice;
-    data['Latitude'] = this.Latitude;
-    data['Longitude'] = this.Longitude;
-    data['Measurements'] = this.Measurements;
+    data['nick'] = this.Nome;
+    data['id'] = this.IdDevice;
+    data['createdIn'] = this.Criado_em;
+    data['disabledIn'] = this.Desativado_em;
     return data;
   }
 }

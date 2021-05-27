@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mvc_persistence/app/controllers/client.controller.dart';
+import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/controllers/device.controller.dart';
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/views/homepage.view.dart';
@@ -103,16 +105,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onClickLogin(BuildContext context) {
-    final login = _tedLogin.text;
+    final cpf = _tedLogin.text;
     final senha = _tedSenha.text;
 
-    print("Login: $login , Senha: $senha ");
+    print("Login: $cpf , Senha: $senha ");
 
     if (!_formKey.currentState.validate()) {
       return;
     }
 
-    if (login.isEmpty || senha.isEmpty) {
+    if (cpf.isEmpty || senha.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
@@ -129,17 +131,23 @@ class _LoginPageState extends State<LoginPage> {
         },
       );
     } else {
-      var _controller = DeviceController();
-      var _list = List<Device>();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller.getByLogin(login, senha).then((data) {
-          setState(() {
-            print("aquiii");
-            _list = _controller.list;
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomePage(_list)));
-          });
-        }).catchError((onError) {
+      var _controller = ClientController();
+      var _client = Client();
+      var _device = List<Device>();
+      var _deviceController = DeviceController();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        try{
+          await _controller.getByLogin(cpf, senha);
+          print("aquiii");
+          if(_controller.cliente.CpfCnpj == null)
+          {
+            throw new Exception();
+          }
+          _client = _controller.cliente;
+          await _deviceController.getByLogin(_client.IdClient);
+          _device = _deviceController.list;
+          Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(_client,_device)));
+        }catch(ex){
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -152,12 +160,12 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                           //Navigator.of(context).pop();
-                        })
+                        },),
                   ],
                 );
-              });
-        });
-      });
+              },);
+        }
+      },);
     }
   }
 }

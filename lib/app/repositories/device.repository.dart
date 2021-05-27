@@ -22,7 +22,7 @@ class DeviceRepository {
   Future create(Device item) async {
     try {
       var device = item.toMap();
-      device.remove("IdDevice");
+      device.remove("id");
       final Database db = await _getDB();
       await db.insert(
         TABLE_NAME,
@@ -34,10 +34,10 @@ class DeviceRepository {
     }
   }
 
-  Future<List<Device>> getAll() async {
+  Future<List<Device>> getByLogin(int login) async {
     try {
       var response = await http.get(Uri.encodeFull(
-          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices/4"));
+          "https://fechadura.azurewebsites.net/api/v1/Devices?clientId=$login"));
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
             .map((x) => Device.fromJson(x))
@@ -52,42 +52,41 @@ class DeviceRepository {
     }
   }
 
-  Future<List<Device>> getByLogin(String login, String senha) async {
-    try {
-      var url =
-          "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices?cpf=$login&senha=$senha";
-      var response = await http.get(Uri.encodeFull(url));
-      if (response.statusCode == 200) {
-        var temp = (jsonDecode(response.body) as List)
-            .map((x) => Device.fromJson(x))
-            .toList();
-        return temp;
-      }
-      print(response.statusCode);
+  //Future<List<Device>> getByLogin(String login, String senha) async {
+    //try {
+      //var url =
+        //  "https://tapegandofogobicho.azurewebsites.net/api/v1/Devices?cpf=$login&senha=$senha";
+      //var response = await http.get(Uri.encodeFull(url));
+      //if (response.statusCode == 200) {
+        //var temp = (jsonDecode(response.body) as List)
+            //.map((x) => Device.fromJson(x))
+          //  .toList();
+        //return temp;
+      //}
+      //print(response.statusCode);
 
-      throw new Exception("Erro ao fazer login");
-    } catch (e) {
-      print("FUDEU Login" + e);
+    //  throw new Exception("Erro ao fazer login");
+  //  } catch (e) {
+//      print("FUDEU Login" + e);
 
-      return new List<Device>();
-    }
-  }
+    //  return new List<Device>();
+   // }
+ // }
 
   Future<Device> read(int id) async {
     try {
       final Database db = await _getDB();
       final List<Map<String, dynamic>> maps = await db.query(
         TABLE_NAME,
-        where: "IdDevice = ?",
+        where: "id = ?",
         whereArgs: [id],
       );
 
       return Device(
-        IdDevice: maps[0]['IdDevice'],
-        IdClient: maps[0]['IdClient'],
-        Nick: maps[0]['Nick'],
-        Latitude: maps[0]['Latitude'],
-        Longitude: maps[0]['Longitude'],
+        IdDevice : maps[0]['id'],
+        Nome : maps[0]['nick'],
+        Criado_em : maps[0]['createdIn'],
+        Desativado_em : maps[0]['disabledIn']
       );
     } catch (ex) {
       print(ex);
@@ -101,7 +100,7 @@ class DeviceRepository {
       await db.update(
         TABLE_NAME,
         item.toMap(),
-        where: "IdDevice = ?",
+        where: "id = ?",
         whereArgs: [item.IdDevice],
       );
     } catch (e) {
@@ -115,7 +114,7 @@ class DeviceRepository {
       final Database db = await _getDB();
       await db.delete(
         TABLE_NAME,
-        where: "IdDevice = ?",
+        where: "id = ?",
         whereArgs: [id],
       );
     } catch (e) {

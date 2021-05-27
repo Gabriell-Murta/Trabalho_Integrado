@@ -19,27 +19,26 @@ class ClientRepository {
     );
   }
 
-   Future<List<Client>> getAll() async {
+   Future<Client> getByLogin(String cpf, String senha) async {
     try {
       var response =
-      await http.get(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"));
+      await http.get(Uri.encodeFull("https://fechadura.azurewebsites.net/api/v1/Client/$cpf/$senha"));
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as List)
-            .map((x) => Client.fromJson(x))
-            .toList();
+        print(response.body);
+        return (Client.fromJson(jsonDecode(response.body)));
       }
 
       throw new Exception();
     } catch (e) {
       print("FUDEU CLIENT REPOSITORIO GETALL");
 
-      return new List<Client>();
+      return new Client();
     }
   }
-  Future<bool> Create(Client client) async {
+  Future<bool> create(Client client) async {
     try {
       var response =
-      await http.put(Uri.encodeFull("https://tapegandofogobicho.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
+      await http.post(Uri.encodeFull("https://fechadura.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
       print("status code:${response.statusCode}");
       if (response.statusCode == 201) {
         return true;
@@ -58,22 +57,23 @@ class ClientRepository {
       final Database db = await _getDB();
       final List<Map<String, dynamic>> maps = await db.query(
         TABLE_NAME,
-        where: "IdClient = ?",
+        where: "clientId = ?",
         whereArgs: [id],
       );
 
       return Client(
-        Nome : maps[0]['Nome'],
-        IdClient: maps[0]['IdClient'],
-        Email: maps[0]['Email'],
-        Logradouro: maps[0]['Logradouro'],
-        Bairro: maps[0]['Bairro'],
-        Numero: maps[0]['Numero'],
-        Cidade: maps[0]['Cidade'],
-        Estado: maps[0]['Estado'],
-        Telefone: maps[0]['Telefone'],
-        CpfCnpj: maps[0]['CpfCnpj'],
-        Senha: maps[0]['Senha'],
+        Nome : maps[0]['name'],
+        IdClient: maps[0]['clientId'],
+        Email: maps[0]['email'],
+        Logradouro: maps[0]['address'],
+        Bairro: maps[0]['district'],
+        Numero: maps[0]['number'],
+        Cidade: maps[0]['city'],
+        Estado: maps[0]['uf'],
+        Cep: maps[0]['postalCode'],
+        CpfCnpj: maps[0]['cpf'],
+        Senha: maps[0]['password'],
+        Criado_em: maps[0]['createdIn'],
       );
     } catch (ex) {
       print(ex);
@@ -87,7 +87,7 @@ class ClientRepository {
       await db.update(
         TABLE_NAME,
         item.toMap(),
-        where: "IdClient = ?",
+        where: "clientId = ?",
         whereArgs: [item.IdClient],
       );
     } catch (e) {
@@ -101,7 +101,7 @@ class ClientRepository {
       final Database db = await _getDB();
       await db.delete(
         TABLE_NAME,
-        where: "IdClient = ?",
+        where: "clientId = ?",
         whereArgs: [id],
       );
     } catch (e) {

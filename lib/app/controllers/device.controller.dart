@@ -5,9 +5,9 @@ class DeviceController {
   List<Device> list = new List<Device>();
   DeviceRepository repository = new DeviceRepository();
 
-  Future<void> getAll() async {
+  Future<void> getByLogin(int id) async {
     try {
-      final allList = await repository.getAll();
+      final allList = await repository.getByLogin(id);
       list.clear();
       list.addAll(allList);
     } catch (e) {
@@ -15,15 +15,15 @@ class DeviceController {
     }
   }
 
-  Future<void> getByLogin(String login, String senha) async {
-    try {
-      final listTemp = await repository.getByLogin(login, senha);
-      list.clear();
-      list.addAll(listTemp);
-    } catch (e) {
-      throw new Exception("Erro ao fazer login");
-    }
-  }
+  //Future<void> getByLogin(int id) async {
+  //  try {
+  //    final listTemp = await repository.getByLogin(id);
+  //   list.clear();
+  //    list.addAll(listTemp);
+  //  } catch (e) {
+  //    throw new Exception("Erro ao fazer login");
+  //  }
+  //}
 
   Future<void> create(Device device) async {
     try {
@@ -34,17 +34,17 @@ class DeviceController {
     }
   }
 
-  Future<void> delete(int id) async {
-    try {
-      list.removeAt(id);
-      await repository.delete(id);
-    } catch (e) {
-      print("Erro: " + e.toString());
-    }
-  }
+  //Future<void> delete(int id) async {
+  //  try {
+  //    list.removeAt(id);
+  //    await repository.delete(id);
+  //  } catch (e) {
+  //    print("Erro: " + e.toString());
+  //  }
+  //}
 
-  Future<void> update(Device device) async {
-    await repository.update(device);
-    await getAll();
-  }
+  //Future<void> update(Device device) async {
+  //  await repository.update(device);
+  //  await getAll();
+  //}
 }

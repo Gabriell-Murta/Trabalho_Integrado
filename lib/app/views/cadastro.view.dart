@@ -15,7 +15,7 @@ class CadastroPage extends StatelessWidget {
   final _bairro = TextEditingController();
   final _cidade = TextEditingController();
   final _estado = TextEditingController();
-  final _telefone = TextEditingController();
+  final _cep = TextEditingController();
   var _controllerClient = ClientController();
   Client client;
   BuildContext _context;
@@ -53,7 +53,7 @@ class CadastroPage extends StatelessWidget {
           _editText("Email", _email, false),
           _editText("Senha", _senha, true),
           _editText("Confirma Senha", _confirmaSenha, true),
-          _editText("Telefone", _telefone, false),
+          _editText("CEP", _cep, false),
           _editText("Logradouro", _logradouro, false),
           _editText("Número", _numero, false),
           _editText("Bairro", _bairro, false),
@@ -96,7 +96,7 @@ class CadastroPage extends StatelessWidget {
         client.Bairro == "" ||
         client.Cidade == "" ||
         client.Estado == "" ||
-        client.Telefone == "" ||
+        client.Cep == "" ||
         client.CpfCnpj == "" ||
         client.Senha == "" ||
         client.Numero == null ||
@@ -143,12 +143,12 @@ class CadastroPage extends StatelessWidget {
         Numero: num_teste,
         Cidade: _cidade.text,
         Estado: _estado.text,
-        Telefone: _telefone.text,
+        Cep: _cep.text,
         CpfCnpj: _cpfCnpj.text,
         Senha: _senha.text);
     print(client.toJson());
     if (ValidateEmpty(client, _confirmaSenha.text)) {
-      _controllerClient.Create(client);
+      _controllerClient.create(client);
       showDialog(
           context: context,
           builder: (BuildContext context) {

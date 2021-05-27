@@ -7,56 +7,60 @@ class Client {
   int Numero;
   String Cidade;
   String Estado;
-  String Telefone;
   String CpfCnpj;
   String Senha;
+  String Cep;
+  DateTime Criado_em;
 
 
-  Client({this.IdClient, this.Nome, this.Email, this.Logradouro, this.Bairro, this.Numero, this.Cidade, this.Estado, this.Telefone, this.CpfCnpj, this.Senha});
+  Client({this.IdClient, this.Nome, this.Email, this.Logradouro, this.Bairro, this.Numero, this.Cidade, this.Estado, this.CpfCnpj, this.Senha,this.Cep,this.Criado_em});
 
   Map<String, dynamic> toMap() {
     return {
-      'IdClient': IdClient,
-      'Nome': Nome,
-      'Email': Email,
-      'Logradouro': Logradouro,
-      'Bairro': Bairro,
-      'Numero': Numero,
-      'Cidade': Cidade,
-      'Estado': Estado,
-      'Telefone': Telefone,
-      'CpfCnpj': CpfCnpj,
-      'Senha': Senha,
+      
+        'name':Nome,
+        'clientId':IdClient,
+        'email':Email,
+        'address':Logradouro,
+        'district':Bairro,
+        'number':Numero,
+        'city':Cidade,
+        'uf':Estado,
+        'postalCode':Cep,
+        'cpf':CpfCnpj,
+        'password':Senha,
+        'createdIn': Criado_em
     };
   }
   Client.fromJson(Map<String, dynamic> json) {
-    Nome = json['Nome'];
-    IdClient = json['IdClient'];
-    Email = json['Email'];
-    Logradouro = json['Logradouro'];
-    Bairro = json['Bairro'];
-    Numero = json['Numero'];
-    Cidade = json['Cidade'];
-    Estado = json['Estado'];
-    Telefone = json['Telefone'];
-    CpfCnpj = json['CpfCnpj'];
-    Senha = json['Senha'];
+    Nome = json['name'];
+    IdClient = json['clientId'];
+    Email = json['email'];
+    Logradouro = json['address'];
+    Bairro = json['district'];
+    Numero = json['number'];
+    Cidade = json['city'];
+    Estado = json['uf'];
+    CpfCnpj = json['cpf'];
+    Senha = json['password'];
+    Criado_em = json['createdIn'];
+    Cep = json['postalCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Nome'] = this.Nome;
-    data['IdClient'] = this.IdClient;
-    data['Email'] = this.Email;
-    data['Logradouro'] = this.Logradouro;
-    data['Bairro'] = this.Bairro;
-    data['Numero'] = this.Numero;
-    data['Cidade'] = this.Cidade;
-    data['Estado'] = this.Estado;
-    data['Telefone'] = this.Telefone;
-    data['CpfCnpj'] = this.CpfCnpj;
-    data['Senha'] = this.Senha;
-
+    data['name'] = this.Nome;
+    data['clientId'] = this.IdClient;
+    data['email'] = this.Email;
+    data['address'] = this.Logradouro;
+    data['district'] = this.Bairro;
+    data['number'] = this.Numero;
+    data['city'] = this.Cidade;
+    data['uf'] = this.Estado;
+    data['cpf'] = this.CpfCnpj;
+    data['password'] = this.Senha;
+    data['createdIn'] = this.Criado_em;
+    data['postalCode'] = this.Cep;
     return data;
   }
 }
