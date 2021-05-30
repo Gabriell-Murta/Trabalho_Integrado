@@ -36,8 +36,7 @@ class DeviceRepository {
 
   Future<List<Device>> getByLogin(int login) async {
     try {
-      var response = await http.get(Uri.encodeFull(
-          "https://fechadura.azurewebsites.net/api/v1/Devices?clientId=$login"));
+      var response = await http.get(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Devices?clientId=$login"));
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
             .map((x) => Device.fromJson(x))

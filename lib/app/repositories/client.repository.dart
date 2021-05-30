@@ -22,7 +22,7 @@ class ClientRepository {
    Future<Client> getByLogin(String cpf, String senha) async {
     try {
       var response =
-      await http.get(Uri.encodeFull("https://fechadura.azurewebsites.net/api/v1/Client/$cpf/$senha"));
+      await http.get(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Client/$cpf/$senha"));
       if (response.statusCode == 200) {
         print(response.body);
         return (Client.fromJson(jsonDecode(response.body)));
@@ -38,7 +38,7 @@ class ClientRepository {
   Future<bool> create(Client client) async {
     try {
       var response =
-      await http.post(Uri.encodeFull("https://fechadura.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
+      await http.post(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Client/"), body:jsonEncode(client.toJson()), headers:{"Content-Type":"application/json"});
       print("status code:${response.statusCode}");
       if (response.statusCode == 201) {
         return true;

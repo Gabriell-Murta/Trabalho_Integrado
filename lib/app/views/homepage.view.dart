@@ -1,29 +1,27 @@
+import '../models/device.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_persistence/app/controllers/client.controller.dart';
-import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/controllers/device.controller.dart';
+import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/device.model.dart';
 
 class HomePage extends StatefulWidget {
-  var _cliente = Client();
-  var _listaDipositivo = List<Device>();
-  HomePage(this._cliente,this._listaDipositivo);
+  Client _cliente = Client();
+  List<Device> _listaDispositivo = List<Device>.empty();
+  HomePage(this._cliente,this._listaDispositivo);
   @override
-  _HomePageState createState() => _HomePageState(_cliente,_listaDipositivo);
+  _HomePageState createState() => _HomePageState(_cliente,_listaDispositivo);
 }
 
 class DevicePanelItem {
-  String ExpandedValue;
   String HeaderValue;
   bool IsExpanded;
   Device Item;
 
   DevicePanelItem(
-      {this.ExpandedValue,
-      this.HeaderValue,
+      {this.HeaderValue,
       this.IsExpanded = false,
       this.Item});
 }
@@ -35,13 +33,13 @@ class _HomePageState extends State<HomePage> {
   var _deviceController = DeviceController();
   var selectedDate = DateTime.now();
   var _cliente = Client();
-  var _listaDipositivo = List<Device>();
+  var _listaDispositivo = List<Device>.empty();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //final SnackBar snackBar = const flutter_search_bar;
-  var list_panel = List<DevicePanelItem>();
+  var list_panel = List<DevicePanelItem>.empty();
 
-  _HomePageState(this._cliente,this._listaDipositivo);
+  _HomePageState(this._cliente,this._listaDispositivo);
 
   @override
   void initState() {
@@ -58,14 +56,6 @@ class _HomePageState extends State<HomePage> {
    setState(() {
      list_panel = generateDevicePanelItem();
     });
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
-    //  _deviceController.getByLogin(_cliente.IdClient).then((data) {
-    //    setState(() {
-    //      _list = _deviceController.list;
-    //      list_panel = generateDevicePanelItem();
-    //    });
-    //  });
-    //});
 }
 
   @override
@@ -84,50 +74,78 @@ class _HomePageState extends State<HomePage> {
         // ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
         child: Container(
-          child: _buildDevicePanel(),
+          child:  _buildDevicePanel(),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: const Icon(Icons.add_circle_outline),
+        backgroundColor: Colors.purple,
       ),
     );
   }
 
   List<DevicePanelItem> generateDevicePanelItem() {
     return List.generate(
-        _listaDipositivo.length,
+        _listaDispositivo.length,
         (index) => DevicePanelItem(
-            ExpandedValue:
-                'ID: "${_listaDipositivo[index].Nome}"\nHASHASHSHASHASHAHSHASHAHSHSA: "${_listaDipositivo[index].Nome}"\nBATA_TESTE: "${_listaDipositivo[index].Nome}"',
-            HeaderValue: _listaDipositivo[index].Nome,
+            HeaderValue: _listaDispositivo[index].Nome,
             IsExpanded: false,
-            Item: _listaDipositivo[index]));
+            Item: _listaDispositivo[index]));
   }
 
   Widget _buildDevicePanel() {
-    if (_listaDipositivo.length == 0) {
-      print("to aqui AAAAAAAAAAAAAA");
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Você ainda não possui dispositivos cadastrados.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 30, color: Theme.of(context).primaryColor)),
-          Text("Favor entrar em contato com comercial@tapegandofogo.br",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 30, color: Theme.of(context).primaryColor))
-        ],
-      );
-    }
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
           list_panel[index].IsExpanded = !isExpanded;
         });
       },
-      
+      children: list_panel.map<ExpansionPanel>((DevicePanelItem devicePanelItem){
+        return ExpansionPanel(
+          //backgroundColor: Colors.purple,
+          headerBuilder: (BuildContext context, bool isExpanded){
+            return ListTile(
+              title: Text(devicePanelItem.HeaderValue),
+            );
+          },
+          body: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _buttonConnect(),
+                _buttonSwitch(),
+              ],
+            ),
+          ),
+          isExpanded: devicePanelItem.IsExpanded,
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buttonConnect(){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20),
+        onSurface: Colors.blue,
+        ),
+      onPressed: null,
+      child: const Text("Conectar"),
+    );
+  }
+
+  Widget _buttonSwitch(){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20),
+        onSurface: Colors.green[200],
+        ),
+      onPressed: null,
+      child: const Text("Abrir"),
     );
   }
 
