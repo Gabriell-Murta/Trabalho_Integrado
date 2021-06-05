@@ -94,9 +94,11 @@ class CadastroDispositivo extends StatelessWidget {
     );
   }
 
-  _onClickCadastro(BuildContext context) {
-    _controllerDevice.create(_nome.text, _client.idClient);
-    if(_controllerDevice.list.any((device) => device.nome == _nome.text)){
+  _onClickCadastro(BuildContext context) async {
+    await _controllerDevice.create(_nome.text, _client.idClient);
+    await _controllerDevice.getByLogin(_client.idClient);
+    
+    if(_controllerDevice.list.any((device) => device.nome.trim().toUpperCase() == _nome.text.trim().toUpperCase())){
       showDialog(
         context: context,
         builder: (BuildContext context) {

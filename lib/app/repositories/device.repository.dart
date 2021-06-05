@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class DeviceRepository {
   Future<List<Device>> getByLogin(int? clientId) async {
     try {
-      var response = await http.get(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Devices?clientId=$clientId"));
+      http.Response response = await http.get(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Devices?clientId=$clientId"));
       
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as List)
@@ -15,7 +15,7 @@ class DeviceRepository {
 
       throw new Exception(jsonDecode(response.body));
     } catch (e) {
-      return List<Device>.empty();
+      return List<Device>.empty(growable: true);
     }
   }
 
@@ -25,7 +25,7 @@ class DeviceRepository {
       data['clientId'] = clientId;
       data['nick'] = nick;
 
-      var response = await http.post(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Devices/"),
+      http.Response response = await http.post(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Devices/"),
         body: jsonEncode(data),
         headers: {"Content-Type":"application/json"});
       

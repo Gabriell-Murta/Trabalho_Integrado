@@ -1,4 +1,5 @@
 import 'package:mvc_persistence/app/views/cadastroDispositivo.view.dart';
+import 'package:path/path.dart';
 import '../models/device.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   Client _cliente = Client();
-  List<Device> _listaDispositivo = List<Device>.empty();
+  List<Device> _listaDispositivo = [];
   HomePage(this._cliente,this._listaDispositivo);
   @override
   _HomePageState createState() => _HomePageState(_cliente,_listaDispositivo);
@@ -29,16 +30,16 @@ class DevicePanelItem {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  var _textDeviceController = TextEditingController();
-  var _clientController = ClientController();
-  var _deviceController = DeviceController();
-  var selectedDate = DateTime.now();
-  var _cliente = Client();
-  var _listaDispositivo = List<Device>.empty();
+  TextEditingController _textDeviceController = TextEditingController();
+  ClientController _clientController = ClientController();
+  DeviceController _deviceController = DeviceController();
+  DateTime selectedDate = DateTime.now();
+  Client _cliente = Client();
+  List<Device> _listaDispositivo = [];
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //final SnackBar snackBar = const flutter_search_bar;
-  var list_panel = List<DevicePanelItem>.empty();
+  List<DevicePanelItem> list_panel = [];
 
   _HomePageState(this._cliente,this._listaDispositivo);
 
@@ -76,12 +77,19 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          child: _buildDevicePanel(),
+          child: _buildDevicePanel(context),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context,MaterialPageRoute(builder: (context) => CadastroDispositivo(_cliente,_listaDispositivo)));
+          Navigator.push(context,MaterialPageRoute(builder: (context) => CadastroDispositivo(_cliente,_listaDispositivo))).whenComplete(() => {
+            _deviceController.getByLogin(_cliente.idClient).then((value) => 
+              setState(() {
+                _listaDispositivo = _deviceController.list;
+                list_panel = generateDevicePanelItem();
+              })
+            )
+          });
         },
         child: const Icon(Icons.add_circle_outline),
         backgroundColor: Colors.purple,
@@ -98,7 +106,7 @@ class _HomePageState extends State<HomePage> {
             item: _listaDispositivo[index]));
   }
 
-  Widget _buildDevicePanel() {
+  Widget _buildDevicePanel(BuildContext context) {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -107,7 +115,7 @@ class _HomePageState extends State<HomePage> {
       },
       children: list_panel.map<ExpansionPanel>((DevicePanelItem devicePanelItem){
         return ExpansionPanel(
-          //backgroundColor: Colors.purple,
+          backgroundColor: Colors.black,
           headerBuilder: (BuildContext context, bool isExpanded){
             return ListTile(
               title: Text(devicePanelItem.headerValue),

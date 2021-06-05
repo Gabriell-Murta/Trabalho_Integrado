@@ -2,7 +2,7 @@ import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/repositories/device.repository.dart';
 
 class DeviceController {
-  List<Device> list = List<Device>.empty(growable: true);
+  List<Device> list = [];
   DeviceRepository repository = DeviceRepository();
 
   Future<void> getByLogin(int? id) async {

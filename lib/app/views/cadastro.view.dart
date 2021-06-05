@@ -15,7 +15,7 @@ class CadastroPage extends StatelessWidget {
   final _cidade = TextEditingController();
   final _estado = TextEditingController();
   final _cep = TextEditingController();
-  var _controllerClient = ClientController();
+  ClientController _controllerClient = ClientController();
   late Client client;
   late BuildContext _context;
 
@@ -127,7 +127,7 @@ class CadastroPage extends StatelessWidget {
     print(_senha.text);
     print(_confirmaSenha.text);
 
-    var numTeste;
+    int? numTeste;
 
     try {
       numTeste = int.parse(_numero.text);

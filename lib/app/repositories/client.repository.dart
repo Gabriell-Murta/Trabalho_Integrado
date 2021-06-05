@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class ClientRepository {
    Future<Client> getByLogin(String cpf, String senha) async {
     try {
-      var response =
+      http.Response response =
       await http.get(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Client/$cpf/$senha"));
       
       if (response.statusCode == 200) {
@@ -19,7 +19,7 @@ class ClientRepository {
   }
   Future<bool> create(Client client) async {
     try {
-      var response = await http.post(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Client/"),
+      http.Response response = await http.post(Uri.parse("https://fechadura.azurewebsites.net/api/v1/Client/"),
         body: jsonEncode(client.toJson()),
         headers: {"Content-Type":"application/json"});
       

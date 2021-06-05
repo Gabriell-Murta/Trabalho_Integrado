@@ -131,10 +131,10 @@ class _LoginPageState extends State<LoginPage> {
         },
       );
     } else {
-      var _controller = ClientController();
-      var _client = Client();
-      var _device = List<Device>.empty();
-      var _deviceController = DeviceController();
+      ClientController _controller = ClientController();
+      Client _client = Client();
+      List<Device> _device = [];
+      DeviceController _deviceController = DeviceController();
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         try{
           await _controller.getByLogin(cpf, senha);
