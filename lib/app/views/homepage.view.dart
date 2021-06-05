@@ -1,3 +1,4 @@
+import 'package:mvc_persistence/app/views/cadastroDispositivo.view.dart';
 import '../models/device.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,14 @@ class HomePage extends StatefulWidget {
 }
 
 class DevicePanelItem {
-  String HeaderValue;
-  bool IsExpanded;
-  Device Item;
+  String headerValue;
+  bool isExpanded;
+  Device item;
 
   DevicePanelItem(
-      {this.HeaderValue,
-      this.IsExpanded = false,
-      this.Item});
+      {required this.headerValue,
+      this.isExpanded = false,
+      required this.item});
 }
 
 class _HomePageState extends State<HomePage> {
@@ -53,10 +54,10 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-   setState(() {
-     list_panel = generateDevicePanelItem();
+    setState(() {
+      list_panel = generateDevicePanelItem();
     });
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +76,12 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          child:  _buildDevicePanel(),
+          child: _buildDevicePanel(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+          Navigator.push(context,MaterialPageRoute(builder: (context) => CadastroDispositivo(_cliente,_listaDispositivo)));
         },
         child: const Icon(Icons.add_circle_outline),
         backgroundColor: Colors.purple,
@@ -92,16 +93,16 @@ class _HomePageState extends State<HomePage> {
     return List.generate(
         _listaDispositivo.length,
         (index) => DevicePanelItem(
-            HeaderValue: _listaDispositivo[index].Nome,
-            IsExpanded: false,
-            Item: _listaDispositivo[index]));
+            headerValue: _listaDispositivo[index].nome,
+            isExpanded: false,
+            item: _listaDispositivo[index]));
   }
 
   Widget _buildDevicePanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
-          list_panel[index].IsExpanded = !isExpanded;
+          list_panel[index].isExpanded = !isExpanded;
         });
       },
       children: list_panel.map<ExpansionPanel>((DevicePanelItem devicePanelItem){
@@ -109,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           //backgroundColor: Colors.purple,
           headerBuilder: (BuildContext context, bool isExpanded){
             return ListTile(
-              title: Text(devicePanelItem.HeaderValue),
+              title: Text(devicePanelItem.headerValue),
             );
           },
           body: Center(
@@ -121,7 +122,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          isExpanded: devicePanelItem.IsExpanded,
+          isExpanded: devicePanelItem.isExpanded,
         );
       }).toList(),
     );
@@ -155,9 +156,11 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         return AlertDialog(
           content: Text(
-              "Seja bem vindo! Parece que esta é a primeira vez que você abre este aplicativo! Através dele, você pode facilmente monitorar e visualizar seus dispositivos!"),
+              "Seja bem vindo! Parece que esta é a primeira vez que você" 
+              + "abre este aplicativo! Através dele, você pode facilmente" + 
+              " monitorar e visualizar seus dispositivos!"),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: new Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();

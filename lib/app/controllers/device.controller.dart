@@ -2,49 +2,28 @@ import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/repositories/device.repository.dart';
 
 class DeviceController {
-  List<Device> list = new List<Device>();
-  DeviceRepository repository = new DeviceRepository();
+  List<Device> list = List<Device>.empty(growable: true);
+  DeviceRepository repository = DeviceRepository();
 
-  Future<void> getByLogin(int id) async {
+  Future<void> getByLogin(int? id) async {
     try {
       final allList = await repository.getByLogin(id);
-      list.clear();
-      list.addAll(allList);
+      
+      list = allList;
     } catch (e) {
       print("Erro: " + e.toString());
     }
   }
 
-  //Future<void> getByLogin(int id) async {
-  //  try {
-  //    final listTemp = await repository.getByLogin(id);
-  //   list.clear();
-  //    list.addAll(listTemp);
-  //  } catch (e) {
-  //    throw new Exception("Erro ao fazer login");
-  //  }
-  //}
-
-  Future<void> create(Device device) async {
+  Future<void> create(String nick, int? clientId) async {
     try {
+      final deviceId = await repository.createDevice(clientId,nick);
+      
+      Device device = Device(idDevice: deviceId, nome: nick, criadoEm: DateTime.now());
+      
       list.add(device);
-      await repository.create(device);
     } catch (e) {
       print("Erro: " + e.toString());
     }
   }
-
-  //Future<void> delete(int id) async {
-  //  try {
-  //    list.removeAt(id);
-  //    await repository.delete(id);
-  //  } catch (e) {
-  //    print("Erro: " + e.toString());
-  //  }
-  //}
-
-  //Future<void> update(Device device) async {
-  //  await repository.update(device);
-  //  await getAll();
-  //}
 }

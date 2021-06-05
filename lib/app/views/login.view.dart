@@ -6,7 +6,6 @@ import 'package:mvc_persistence/app/models/client.model.dart';
 import 'package:mvc_persistence/app/controllers/device.controller.dart';
 import 'package:mvc_persistence/app/models/device.model.dart';
 import 'package:mvc_persistence/app/views/homepage.view.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'cadastro.view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _tedLogin = TextEditingController();
   final _tedSenha = TextEditingController();
-  BuildContext _context;
+  late BuildContext _context;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Tá Pegando Fogo Bicho",
+          "Fechadura Eletrôcina",
           style: TextStyle(color: Theme.of(context).primaryColorDark),
         ),
       ),
@@ -42,7 +41,8 @@ class _LoginPageState extends State<LoginPage> {
     if (text.isEmpty) {
       return "Campo obrigatório";
     }
-    return null;
+
+    return '';
   }
 
   _body(BuildContext context) {
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
         // inputFormatters: new MaskTextInputFormatter(mask: ),
         controller: controller,
         obscureText: field == "Senha",
-        validator: (s) => _validaInput(s, field),
+        validator: (s) => _validaInput(s!, field),
         keyboardType: TextInputType.text,
         style: TextStyle(fontSize: 22, color: Theme.of(_context).primaryColor),
         decoration: InputDecoration(
@@ -88,8 +88,8 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
-      child: RaisedButton(
-        color: Theme.of(context).primaryColor,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
         child: Text(title,
             style: TextStyle(
                 color: Theme.of(context).primaryColorDark, fontSize: 20.0)),
@@ -110,9 +110,9 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Login: $cpf , Senha: $senha ");
 
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+    // if (!_formKey.currentState!.validate()) {
+    //   return;
+    // }
 
     if (cpf.isEmpty || senha.isEmpty) {
       showDialog(
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
               title: Text("Erro"),
               content: Text("Login e/ou Senha inválido(s)"),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text("OK"),
                     onPressed: () {
                       Navigator.pop(context);
@@ -133,36 +133,37 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       var _controller = ClientController();
       var _client = Client();
-      var _device = List<Device>();
+      var _device = List<Device>.empty();
       var _deviceController = DeviceController();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         try{
           await _controller.getByLogin(cpf, senha);
-          print("aquiii");
-          if(_controller.cliente.CpfCnpj == null)
+          if(_controller.cliente.cpfCnpj == null)
           {
             throw new Exception();
           }
           _client = _controller.cliente;
-          await _deviceController.getByLogin(_client.IdClient);
+          await _deviceController.getByLogin(_client.idClient);
           _device = _deviceController.list;
           Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(_client,_device)));
         }catch(ex){
           showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Erro ao fazer login"),
-                  content: Text("Confira seu CPF/CNPJ e a sua senha!"),
-                  actions: <Widget>[
-                    FlatButton(
-                        child: Text("OK"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },),
-                  ],
-                );
-              },);
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Erro ao fazer login"),
+                content: Text("Confira seu CPF/CNPJ e a sua senha!"),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
       },);
     }

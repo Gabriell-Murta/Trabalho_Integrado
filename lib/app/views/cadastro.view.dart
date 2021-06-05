@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mvc_persistence/app/controllers/client.controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mvc_persistence/app/models/client.model.dart';
-import 'package:mvc_persistence/app/repositories/client.repository.dart';
 
 class CadastroPage extends StatelessWidget {
   final _nome = TextEditingController();
@@ -17,8 +16,8 @@ class CadastroPage extends StatelessWidget {
   final _estado = TextEditingController();
   final _cep = TextEditingController();
   var _controllerClient = ClientController();
-  Client client;
-  BuildContext _context;
+  late Client client;
+  late BuildContext _context;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -89,18 +88,18 @@ class CadastroPage extends StatelessWidget {
     );
   }
 
-  bool ValidateEmpty(Client client, final confirma_senha) {
-    if (client.Nome == "" ||
-        client.Email == "" ||
-        client.Logradouro == "" ||
-        client.Bairro == "" ||
-        client.Cidade == "" ||
-        client.Estado == "" ||
-        client.Cep == "" ||
-        client.CpfCnpj == "" ||
-        client.Senha == "" ||
-        client.Numero == null ||
-        client.Senha != confirma_senha) {
+  bool validateEmpty(Client client, final confirmaSenha) {
+    if (client.nome == "" ||
+        client.email == "" ||
+        client.logradouro == "" ||
+        client.bairro == "" ||
+        client.cidade == "" ||
+        client.estado == "" ||
+        client.cep == "" ||
+        client.cpfCnpj == "" ||
+        client.senha == "" ||
+        client.numero == null ||
+        client.senha != confirmaSenha) {
       return false;
     } else
       return true;
@@ -111,8 +110,8 @@ class CadastroPage extends StatelessWidget {
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
-      child: RaisedButton(
-        color: Theme.of(context).primaryColor,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
         child: Text("Salvar",
             style: TextStyle(
                 color: Theme.of(context).primaryColorDark, fontSize: 20.0)),
@@ -127,27 +126,28 @@ class CadastroPage extends StatelessWidget {
     print("vai salvar");
     print(_senha.text);
     print(_confirmaSenha.text);
-    var num_teste;
+
+    var numTeste;
 
     try {
-      num_teste = int.parse(_numero.text);
+      numTeste = int.parse(_numero.text);
     } catch (e) {
-      num_teste = null;
+      numTeste = null;
     }
     client = new Client(
-        IdClient: 0,
-        Nome: _nome.text,
-        Email: _email.text,
-        Logradouro: _logradouro.text,
-        Bairro: _bairro.text,
-        Numero: num_teste,
-        Cidade: _cidade.text,
-        Estado: _estado.text,
-        Cep: _cep.text,
-        CpfCnpj: _cpfCnpj.text,
-        Senha: _senha.text);
+        idClient: 0,
+        nome: _nome.text,
+        email: _email.text,
+        logradouro: _logradouro.text,
+        bairro: _bairro.text,
+        numero: numTeste,
+        cidade: _cidade.text,
+        estado: _estado.text,
+        cep: _cep.text,
+        cpfCnpj: _cpfCnpj.text,
+        senha: _senha.text);
     print(client.toJson());
-    if (ValidateEmpty(client, _confirmaSenha.text)) {
+    if (validateEmpty(client, _confirmaSenha.text)) {
       _controllerClient.create(client);
       showDialog(
           context: context,
@@ -156,7 +156,7 @@ class CadastroPage extends StatelessWidget {
               title: Text(""),
               content: Text("Cliente cadastrado com sucesso!"),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -167,21 +167,22 @@ class CadastroPage extends StatelessWidget {
           });
     } else {
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Erro"),
-              content: Text("Dados inválidos!"),
-              actions: <Widget>[
-                FlatButton(
-                    child: Text("OK"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      //Navigator.of(context).pop();
-                    })
-              ],
-            );
-          });
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Erro"),
+            content: Text("Dados inválidos!"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+              )
+            ],
+          );
+        }
+      );
     }
   }
 }

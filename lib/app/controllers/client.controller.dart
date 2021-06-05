@@ -21,18 +21,4 @@ class ClientController {
       print("Erro: " + e.toString());
     }
   }
-
-  // Future<void> delete(int id) async {
-  //  try {
-  //    list.removeAt(id);
-  //    await repository.delete(id);
-  //  } catch (e) {
-  //    print("Erro: " + e.toString());
-  //  }
-  // }
-
-  //Future<void> update(Client client) async {
-  //  await repository.update(client);
-  //  await getAll();
-  //}
 }
