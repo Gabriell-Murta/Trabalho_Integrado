@@ -1,29 +1,29 @@
 # Dispositivo
 
-Repositório - https://github.com/joaoafneto/TaPegandoFogoBicho
+Repositório - https://github.com/Gabriell-Murta/Trabalho_Integrado
 
-Swagger - https://tapegandofogobicho.azurewebsites.net/swagger/index.html
+Swagger - http://fechadura.azurewebsites.net/swagger
 
-Os componentes do grupo : Gabriell Murta , José Willian , João Antonio , Hugo Brandão, Flavia Viera, Esther Favero
+Os componentes do grupo : Gabriell Murta , João Antonio , Hugo Brandão
 
 Divisão das tarefas no aplicativo:
 
-Esther e Flávia : View e Model 
+João e Gabriell : View e Model 
 
-Gabriell e José : Repository 
+Gabriell e João : Repository 
 
 Hugo e João : Controllers
 
 
 Dispositivo : Hugo Brandão
 
-Banco de Dados : Gabriell Murta , José Willian
+Banco de Dados : Gabriell Murta
 
 Backend : João Antonio
 
 ## Contexto
 
-Desenvolver um dispositivo IoT conectado à nuvem através de MQTT, que pode ser posicionado em locais estratégicos para detecção e previsão de queimadas, com acesso a um aplicativo mobile de monitoramento de todos os dispositivos, suas localizações e possíveis queimadas. Os dados serão armazenados em um banco MySQL, e acessáveis através de um backend baseado em C#, e hospedado em nuvem.
+Desenvolver uma fechadura eletrônica, com comunicação via bluetooth para conexão com o aplicativo mobile. Gerenciando as fechaduras pelo aplicativo para abrir ou trancar uma porta. Os dados serão armazenados em um banco MySQL, e acessáveis através de um backend baseado em C#, e hospedado em nuvem.
 
 ## Documentação
 
