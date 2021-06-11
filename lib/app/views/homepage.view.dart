@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         bluetooth.startPeripheralScan(
           // uuids: [
           //   "F000AA00-0451-4000-B000-000000000000",
-          // ],
+          // ], Vai HUGOSTOSO 666
         ).listen((scanResult) {
           print("Scanned Peripheral ${scanResult.peripheral.name}, RSSI ${scanResult.rssi}");
           //bluetooth.stopPeripheralScan();
