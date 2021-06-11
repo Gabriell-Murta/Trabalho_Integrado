@@ -7,8 +7,7 @@ import 'package:mvc_persistence/app/models/device.model.dart';
 class CadastroDispositivo extends StatelessWidget {
   final _nome = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  
-  var _controllerDevice = DeviceController();
+  final _controllerDevice = DeviceController();
   Client _client = Client();
   List<Device> _devices = List.empty();
 
@@ -47,7 +46,7 @@ class CadastroDispositivo extends StatelessWidget {
     );
   }
 
-  _editText(String field, TextEditingController controller, bool inSenha,BuildContext context) {
+  _editText(String field, TextEditingController controller, bool inSenha, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(

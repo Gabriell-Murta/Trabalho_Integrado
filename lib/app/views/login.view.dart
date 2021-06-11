@@ -17,7 +17,6 @@ class _LoginPageState extends State<LoginPage> {
   final _tedLogin = TextEditingController();
   final _tedSenha = TextEditingController();
   late BuildContext _context;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override

@@ -15,10 +15,9 @@ class CadastroPage extends StatelessWidget {
   final _cidade = TextEditingController();
   final _estado = TextEditingController();
   final _cep = TextEditingController();
-  ClientController _controllerClient = ClientController();
+  final ClientController _controllerClient = ClientController();
   late Client client;
   late BuildContext _context;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override

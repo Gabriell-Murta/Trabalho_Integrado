@@ -1,3 +1,4 @@
+import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'package:mvc_persistence/app/views/cadastroDispositivo.view.dart';
 import 'package:path/path.dart';
 import '../models/device.model.dart';
@@ -46,6 +47,26 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    BleManager bluetooth = BleManager();
+    bluetooth.createClient();
+    bluetooth.enableRadio();
+    bluetooth.bluetoothState().then((value) {
+      bluetooth.observeBluetoothState().listen((event) {
+        print(event);
+        bluetooth.startPeripheralScan(
+          // uuids: [
+          //   "F000AA00-0451-4000-B000-000000000000",
+          // ],
+        ).listen((scanResult) {
+          print("Scanned Peripheral ${scanResult.peripheral.name}, RSSI ${scanResult.rssi}");
+          //bluetooth.stopPeripheralScan();
+        });
+      });
+    });
+
+
+
+    // bluetooth.destroyClient();
 
     SharedPreferences.getInstance().then((value) {
       final _firstTime = value.getBool('firstTime') ?? true;
